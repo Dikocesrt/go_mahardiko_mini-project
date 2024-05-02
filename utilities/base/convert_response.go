@@ -17,6 +17,8 @@ func ConvertResponseCode(err error) int {
 		return http.StatusInternalServerError
 	case constants.ErrHashedPassword:
 		return http.StatusInternalServerError
+	case constants.ErrEmptyInputLogin:
+		return http.StatusBadRequest
 	default:
 		return http.StatusInternalServerError
 	}

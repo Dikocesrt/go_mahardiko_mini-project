@@ -3,6 +3,7 @@ package user
 import (
 	"habit/constants"
 	userEntitites "habit/entities/user"
+	"habit/middlewares"
 
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
@@ -39,4 +40,20 @@ func (userUseCase *UserUseCase) Register(user *userEntitites.User) (userEntitite
 	}
 
 	return newUser, nil
+}
+
+func (userUseCase *UserUseCase) Login(user *userEntitites.User) (userEntitites.User, error) {
+	if user.Username == "" || user.Password == "" {
+		return userEntitites.User{}, constants.ErrEmptyInputLogin
+	}
+
+	userFromDb, err := userUseCase.repository.Login(user)
+	if err != nil {
+		return userEntitites.User{}, constants.ErrUserNotFound
+	}
+
+	token, _ := middlewares.CreateToken(userFromDb.Id)
+	userFromDb.Token = token
+
+	return userFromDb, nil
 }

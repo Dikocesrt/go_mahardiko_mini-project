@@ -21,4 +21,5 @@ func NewRoute(userController *user.UserController) *RouteController {
 func (r *RouteController) InitRoute(e *echo.Echo) {
 	myMiddleware.LogMiddleware(e)
 	e.POST("/register", r.userController.Register)
+	e.POST("/login", r.userController.Login)
 }
