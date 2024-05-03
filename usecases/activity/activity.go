@@ -35,3 +35,15 @@ func (activityUseCase *ActivityUseCase) GetActivityByUserId(userId int) ([]activ
 	}
 	return activities, nil
 }
+
+func (activityUseCase *ActivityUseCase) UpdateActivityById(activity activityEntities.Activity) (activityEntities.Activity, error) {
+	if activity.Title == "" || activity.ActivityStart == "" || activity.ActivityFinish == "" {
+		return activityEntities.Activity{}, constants.ErrEmptyInputCreateActivity
+	}
+
+	activity, err := activityUseCase.repository.UpdateActivityById(activity)
+	if err != nil {
+		return activityEntities.Activity{}, err
+	}
+	return activity, nil
+}

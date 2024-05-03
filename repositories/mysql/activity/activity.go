@@ -38,7 +38,7 @@ func (activityRepo *ActivityRepo) CreateActivity(activity activityEntities.Activ
 		return activityEntities.Activity{}, err
 	}
 
-	var activityTypeTemp activityEntities.ActivityType
+	var activityTypeTemp ActivityType
 	err = activityRepo.DB.Where("id = ?", activity.ActivityTypeId).First(&activityTypeTemp).Error
 	if err != nil {
 		return activityEntities.Activity{}, err
@@ -46,10 +46,11 @@ func (activityRepo *ActivityRepo) CreateActivity(activity activityEntities.Activ
 
 	newActivityEnt := activityDb.FromActivityDbToActivityEntities()
 	newActivityDetailEnt := activityDetailDb.FromActivityDbToActivityDetailEntities()
+	newActivityType := activityTypeTemp.FromActivityDbToActivityTypeEntities()
 
 	newActivityDetailEnt.Id = activityDb.ActivityDetailId
 	newActivityEnt.ActivityDetail = *newActivityDetailEnt
-	newActivityEnt.ActivityType = activityTypeTemp
+	newActivityEnt.ActivityType = *newActivityType
 
 	return *newActivityEnt, nil
 }
@@ -91,4 +92,57 @@ func (activityRepo *ActivityRepo) GetActivityByUserId(userId int) ([]activityEnt
 	}
 
 	return activitiesEntities, nil
+}
+
+func (activityRepo *ActivityRepo) UpdateActivityById(activity activityEntities.Activity) (activityEntities.Activity, error) {
+	activityDb := FromActivityEntitiesToActivityDb(activity)
+	activityDb.Id = activity.Id
+	activityDetailDb := FromActivityEntitiesToActivityDetailDb(activity)
+
+	var activityTemp Activity
+
+	err := activityRepo.DB.Where("id = ?", activity.Id).First(&activityTemp).Error
+	if err != nil {
+		return activityEntities.Activity{}, err
+	}
+
+	activityDb.CreatedAt = activityTemp.CreatedAt
+
+	activityDb.ActivityDetailId = activityTemp.ActivityDetailId
+	err = activityRepo.DB.Save(&activityDb).Error
+	if err != nil {
+		return activityEntities.Activity{}, err
+	}
+
+	err = activityRepo.DB.First(&activityDb).Error
+	if err != nil {
+		return activityEntities.Activity{}, err
+	}
+
+	activityDetailDb.Id = activityDb.ActivityDetailId
+
+	err = activityRepo.DB.Save(&activityDetailDb).Error
+	if err != nil {
+		return activityEntities.Activity{}, err
+	}
+
+	err = activityRepo.DB.First(&activityDetailDb).Error
+	if err != nil {
+		return activityEntities.Activity{}, err
+	}
+
+	var activityTypeTemp ActivityType
+	err = activityRepo.DB.Where("id = ?", activity.ActivityTypeId).First(&activityTypeTemp).Error
+	if err != nil {
+		return activityEntities.Activity{}, err
+	}
+
+	newActivityEnt := activityDb.FromActivityDbToActivityEntities()
+	newActivityDetailEnt := activityDetailDb.FromActivityDbToActivityDetailEntities()
+	newActivityType := activityTypeTemp.FromActivityDbToActivityTypeEntities()
+
+	newActivityEnt.ActivityDetail = *newActivityDetailEnt
+	newActivityEnt.ActivityType = *newActivityType
+
+	return *newActivityEnt, nil
 }
