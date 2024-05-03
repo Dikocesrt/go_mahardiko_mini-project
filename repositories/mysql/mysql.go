@@ -2,6 +2,7 @@ package mysql
 
 import (
 	"fmt"
+	activityDb "habit/repositories/mysql/activity"
 	userDb "habit/repositories/mysql/user"
 
 	"gorm.io/driver/mysql"
@@ -34,5 +35,5 @@ func ConnectDB(config Config) *gorm.DB {
 }
 
 func InitMigrate(db *gorm.DB) {
-	db.AutoMigrate(&userDb.User{})
+	db.AutoMigrate(&userDb.User{}, &activityDb.Activity{}, &activityDb.ActivityType{}, &activityDb.ActivityDetail{})
 }

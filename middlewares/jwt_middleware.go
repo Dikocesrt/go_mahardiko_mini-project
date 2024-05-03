@@ -7,7 +7,7 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-func CreateToken(userId string) (string, error) {
+func CreateToken(userId int) (string, error) {
 	//membuat payload
 	claims := jwt.MapClaims{}
 	claims["userId"] = userId

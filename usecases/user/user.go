@@ -5,7 +5,6 @@ import (
 	userEntitites "habit/entities/user"
 	"habit/middlewares"
 
-	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -23,9 +22,6 @@ func (userUseCase *UserUseCase) Register(user *userEntitites.User) (userEntitite
 	if user.FullName == "" || user.Username == "" || user.Email == "" || user.Password == "" {
 		return userEntitites.User{}, constants.ErrEmptyInputRegistration
 	}
-
-	id := uuid.New()
-	user.Id = id.String()
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
