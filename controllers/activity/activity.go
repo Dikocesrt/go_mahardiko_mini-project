@@ -6,6 +6,7 @@ import (
 	activityEntities "habit/entities/activity"
 	"habit/utilities/base"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -64,4 +65,38 @@ func (activityController *ActivityController) CreateActivity(c echo.Context) err
 	}
 
 	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Register", activityResponse))
+}
+
+func (activityController *ActivityController) GetActivityByUserId(c echo.Context) error {
+	userId := c.Param("userId")
+	id, _ := strconv.Atoi(userId)
+
+	activityEnt, err := activityController.activityUseCase.GetActivityByUserId(id)
+
+	activityResponse := make([]response.Activity, len(activityEnt))
+	for i := 0; i < len(activityEnt); i++ {
+		activityResponse[i] = response.Activity{
+			Id:             activityEnt[i].Id,
+			Title:          activityEnt[i].Title,
+			ActivityStart:  activityEnt[i].ActivityStart,
+			ActivityFinish: activityEnt[i].ActivityFinish,
+			UserId:         activityEnt[i].UserId,
+			ActivityDetail: response.ActivityDetail{
+				HeartRate:      activityEnt[i].ActivityDetail.HeartRate,
+				Intensity:      activityEnt[i].ActivityDetail.Intensity,
+				CaloriesBurned: activityEnt[i].ActivityDetail.CaloriesBurned,
+				FoodDetails:    activityEnt[i].ActivityDetail.FoodDetails,
+				ImageUrl:       activityEnt[i].ActivityDetail.ImageUrl,
+			},
+			ActivityType: response.ActivityType{
+				Name:        activityEnt[i].ActivityType.Name,
+				Description: activityEnt[i].ActivityType.Description,
+			},
+		}
+	}
+
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get Activity", activityResponse))
 }

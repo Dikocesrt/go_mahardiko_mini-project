@@ -74,3 +74,11 @@ func (activity *ActivityDetail) FromActivityDbToActivityDetailEntities() *activi
 		ImageUrl:       activity.ImageUrl,
 	}
 }
+
+func (activity *ActivityType) FromActivityDbToActivityTypeEntities() *activityEntities.ActivityType {
+	return &activityEntities.ActivityType{
+		Id:          activity.Id,
+		Name:        activity.Name,
+		Description: activity.Description,
+	}
+}

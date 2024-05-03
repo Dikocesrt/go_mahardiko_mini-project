@@ -31,4 +31,5 @@ func (r *RouteController) InitRoute(e *echo.Echo) {
 	eJwt := e.Group("/")
 	eJwt.Use(middleware.JWT([]byte(constants.SECRET_JWT)))
 	eJwt.POST("activities", r.activityController.CreateActivity)
+	eJwt.GET("activities/:userId", r.activityController.GetActivityByUserId)
 }

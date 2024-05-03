@@ -28,8 +28,10 @@ type ActivityDetail struct {
 
 type RepositoryInterface interface {
 	CreateActivity(activity Activity) (Activity, error)
+	GetActivityByUserId(userId int) ([]Activity, error)
 }
 
 type UseCaseInterface interface {
 	CreateActivity(activity Activity) (Activity, error)
+	GetActivityByUserId(userId int) ([]Activity, error)
 }

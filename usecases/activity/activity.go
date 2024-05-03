@@ -27,3 +27,11 @@ func (activityUseCase *ActivityUseCase) CreateActivity(activity activityEntities
 
 	return activity, nil
 }
+
+func (activityUseCase *ActivityUseCase) GetActivityByUserId(userId int) ([]activityEntities.Activity, error) {
+	activities, err := activityUseCase.repository.GetActivityByUserId(userId)
+	if err != nil {
+		return []activityEntities.Activity{}, err
+	}
+	return activities, nil
+}
