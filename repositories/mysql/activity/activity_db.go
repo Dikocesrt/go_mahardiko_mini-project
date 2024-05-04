@@ -64,21 +64,21 @@ func (activity *Activity) FromActivityDbToActivityEntities() *activityEntities.A
 	}
 }
 
-func (activity *ActivityDetail) FromActivityDbToActivityDetailEntities() *activityEntities.ActivityDetail {
+func (activityDb *ActivityDetail) FromActivityDbToActivityDetailEntities() *activityEntities.ActivityDetail {
 	return &activityEntities.ActivityDetail{
-		Id:             activity.Id,
-		HeartRate:      activity.HeartRate,
-		Intensity:      activity.Intensity,
-		CaloriesBurned: activity.CaloriesBurned,
-		FoodDetails:    activity.FoodDetails,
-		ImageUrl:       activity.ImageUrl,
+		Id:             activityDb.Id,
+		HeartRate:      activityDb.HeartRate,
+		Intensity:      activityDb.Intensity,
+		CaloriesBurned: activityDb.CaloriesBurned,
+		FoodDetails:    activityDb.FoodDetails,
+		ImageUrl:       activityDb.ImageUrl,
 	}
 }
 
-func (activity *ActivityType) FromActivityDbToActivityTypeEntities() *activityEntities.ActivityType {
+func (activityType *ActivityType) FromActivityDbToActivityTypeEntities() *activityEntities.ActivityType {
 	return &activityEntities.ActivityType{
-		Id:          activity.Id,
-		Name:        activity.Name,
-		Description: activity.Description,
+		Id:          activityType.Id,
+		Name:        activityType.Name,
+		Description: activityType.Description,
 	}
 }

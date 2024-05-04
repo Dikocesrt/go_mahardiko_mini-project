@@ -29,6 +29,7 @@ type ActivityDetail struct {
 type RepositoryInterface interface {
 	CreateActivity(activity Activity) (Activity, error)
 	GetActivityByUserId(userId int) ([]Activity, error)
+	GetActivityById(activity Activity) (Activity, error)
 	UpdateActivityById(activity Activity) (Activity, error)
 	DeleteActivityById(activity Activity) error
 }
@@ -36,6 +37,7 @@ type RepositoryInterface interface {
 type UseCaseInterface interface {
 	CreateActivity(activity Activity) (Activity, error)
 	GetActivityByUserId(userId int) ([]Activity, error)
+	GetActivityById(activity Activity) (Activity, error)
 	UpdateActivityById(activity Activity) (Activity, error)
 	DeleteActivityById(activity Activity) error
 }

@@ -101,6 +101,39 @@ func (activityController *ActivityController) GetActivityByUserId(c echo.Context
 	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get Activity", activityResponse))
 }
 
+func (activityController *ActivityController) GetActivityById(c echo.Context) error {
+	activityId := c.Param("id")
+	id, _ := strconv.Atoi(activityId)
+
+	var activityEnt activityEntities.Activity
+	activityEnt.Id = id
+	activityEnt, err := activityController.activityUseCase.GetActivityById(activityEnt)
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	activityResponse := response.Activity{
+		Id:             activityEnt.Id,
+		Title:          activityEnt.Title,
+		ActivityStart:  activityEnt.ActivityStart,
+		ActivityFinish: activityEnt.ActivityFinish,
+		UserId:         activityEnt.UserId,
+		ActivityDetail: response.ActivityDetail{
+			HeartRate:      activityEnt.ActivityDetail.HeartRate,
+			Intensity:      activityEnt.ActivityDetail.Intensity,
+			CaloriesBurned: activityEnt.ActivityDetail.CaloriesBurned,
+			FoodDetails:    activityEnt.ActivityDetail.FoodDetails,
+			ImageUrl:       activityEnt.ActivityDetail.ImageUrl,
+		},
+		ActivityType: response.ActivityType{
+			Name:        activityEnt.ActivityType.Name,
+			Description: activityEnt.ActivityType.Description,
+		},
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get Activity", activityResponse))
+}
+
 func (activityController *ActivityController) UpdateActivityById(c echo.Context) error {
 	activityId := c.Param("id")
 	id, _ := strconv.Atoi(activityId)

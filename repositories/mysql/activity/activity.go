@@ -94,6 +94,37 @@ func (activityRepo *ActivityRepo) GetActivityByUserId(userId int) ([]activityEnt
 	return activitiesEntities, nil
 }
 
+func (activityRepo *ActivityRepo) GetActivityById(activity activityEntities.Activity) (activityEntities.Activity, error) {
+	var activityDb Activity
+	
+	err := activityRepo.DB.Where("id = ?", activity.Id).First(&activityDb).Error
+	if err != nil {
+		fmt.Println(err)
+		return activityEntities.Activity{}, err
+	}
+
+	var activityDetailDb ActivityDetail
+	err = activityRepo.DB.Where("id = ?", activityDb.ActivityDetailId).First(&activityDetailDb).Error
+	if err != nil {
+		return activityEntities.Activity{}, err
+	}
+
+	var activityTypeDb ActivityType
+	err = activityRepo.DB.Where("id = ?", activityDb.ActivityTypeId).First(&activityTypeDb).Error
+	if err != nil {
+		return activityEntities.Activity{}, err
+	}
+
+	newActivityEnt := activityDb.FromActivityDbToActivityEntities()
+	newActivityDetailEnt := activityDetailDb.FromActivityDbToActivityDetailEntities()
+	newActivityType := activityTypeDb.FromActivityDbToActivityTypeEntities()
+
+	newActivityEnt.ActivityDetail = *newActivityDetailEnt
+	newActivityEnt.ActivityType = *newActivityType
+
+	return *newActivityEnt, nil
+}
+
 func (activityRepo *ActivityRepo) UpdateActivityById(activity activityEntities.Activity) (activityEntities.Activity, error) {
 	activityDb := FromActivityEntitiesToActivityDb(activity)
 	activityDb.Id = activity.Id

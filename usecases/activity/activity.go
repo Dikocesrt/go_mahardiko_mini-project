@@ -36,6 +36,14 @@ func (activityUseCase *ActivityUseCase) GetActivityByUserId(userId int) ([]activ
 	return activities, nil
 }
 
+func (activityUseCase *ActivityUseCase) GetActivityById(activity activityEntities.Activity) (activityEntities.Activity, error) {
+	activity, err := activityUseCase.repository.GetActivityById(activity)
+	if err != nil {
+		return activityEntities.Activity{}, constants.ErrGetDatabase
+	}
+	return activity, nil
+}
+
 func (activityUseCase *ActivityUseCase) UpdateActivityById(activity activityEntities.Activity) (activityEntities.Activity, error) {
 	if activity.Title == "" || activity.ActivityStart == "" || activity.ActivityFinish == "" {
 		return activityEntities.Activity{}, constants.ErrEmptyInputCreateActivity
