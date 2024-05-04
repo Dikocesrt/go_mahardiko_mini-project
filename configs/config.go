@@ -24,3 +24,7 @@ func InitConfigMySQL() mysql.Config {
 		DBPort: os.Getenv("DBPort"),
 	}
 }
+
+func InitConfigCloudinary() string {
+	return os.Getenv("CLOUDINARY_URL")
+}

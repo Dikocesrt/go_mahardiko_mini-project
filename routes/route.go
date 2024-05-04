@@ -35,5 +35,7 @@ func (r *RouteController) InitRoute(e *echo.Echo) {
 	eJwt.PUT("activities/:id", r.activityController.UpdateActivityById)
 	eJwt.DELETE("activities/:id", r.activityController.DeleteActivityById)
 
-	eJwt.GET("activities/user/:userId", r.activityController.GetActivityByUserId)
+	eJwt.GET("activities/users/:userId", r.activityController.GetActivityByUserId)
+
+	eJwt.PUT("users/:id", r.userController.UpdateProfileById)
 }

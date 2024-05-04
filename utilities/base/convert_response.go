@@ -25,6 +25,14 @@ func ConvertResponseCode(err error) int {
 		return http.StatusBadRequest
 	case constants.ErrEmptyInputCreateActivity:
 		return http.StatusBadRequest
+	case constants.ErrEmptyInputUpdateProfile:
+		return http.StatusBadRequest
+	case constants.ErrUsernameAlreadyExist:
+		return http.StatusBadRequest
+	case constants.ErrEmailAlreadyExist:
+		return http.StatusBadRequest
+	case constants.ErrCloudinary:
+		return http.StatusInternalServerError
 	default:
 		return http.StatusInternalServerError
 	}
