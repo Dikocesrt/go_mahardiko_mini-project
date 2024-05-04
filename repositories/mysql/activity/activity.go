@@ -146,3 +146,28 @@ func (activityRepo *ActivityRepo) UpdateActivityById(activity activityEntities.A
 
 	return *newActivityEnt, nil
 }
+
+func (activityRepo *ActivityRepo) DeleteActivityById(activity activityEntities.Activity) error {
+	var activityDb Activity
+	activityDb.Id = activity.Id
+
+	err := activityRepo.DB.Where("id = ?", activityDb.Id).First(&activityDb).Error
+	if err != nil {
+		return err
+	}
+
+	var activityDetailDb ActivityDetail 
+	activityDetailDb.Id = activityDb.ActivityDetailId
+
+	err = activityRepo.DB.Delete(&activityDetailDb).Error
+	if err != nil {
+		return err
+	}
+
+	err = activityRepo.DB.Delete(&activityDb).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

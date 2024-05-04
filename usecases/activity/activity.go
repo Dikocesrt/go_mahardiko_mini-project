@@ -31,7 +31,7 @@ func (activityUseCase *ActivityUseCase) CreateActivity(activity activityEntities
 func (activityUseCase *ActivityUseCase) GetActivityByUserId(userId int) ([]activityEntities.Activity, error) {
 	activities, err := activityUseCase.repository.GetActivityByUserId(userId)
 	if err != nil {
-		return []activityEntities.Activity{}, err
+		return []activityEntities.Activity{}, constants.ErrGetDatabase
 	}
 	return activities, nil
 }
@@ -43,7 +43,15 @@ func (activityUseCase *ActivityUseCase) UpdateActivityById(activity activityEnti
 
 	activity, err := activityUseCase.repository.UpdateActivityById(activity)
 	if err != nil {
-		return activityEntities.Activity{}, err
+		return activityEntities.Activity{}, constants.ErrUpdateDatabase
 	}
 	return activity, nil
+}
+
+func (activityUseCase *ActivityUseCase) DeleteActivityById(activity activityEntities.Activity) error {
+	err := activityUseCase.repository.DeleteActivityById(activity)
+	if err != nil {
+		return constants.ErrDeleteDatabase
+	}
+	return nil
 }

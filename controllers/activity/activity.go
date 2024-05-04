@@ -151,3 +151,18 @@ func (activityController *ActivityController) UpdateActivityById(c echo.Context)
 
 	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Update Activity", activityResponse))
 }
+
+func (activityController *ActivityController) DeleteActivityById(c echo.Context) error {
+	activityId := c.Param("id")
+	id, _ := strconv.Atoi(activityId)
+
+	var activityEnt activityEntities.Activity
+	activityEnt.Id = id
+
+	err := activityController.activityUseCase.DeleteActivityById(activityEnt)
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Delete Activity", nil))
+}

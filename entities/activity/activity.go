@@ -30,10 +30,12 @@ type RepositoryInterface interface {
 	CreateActivity(activity Activity) (Activity, error)
 	GetActivityByUserId(userId int) ([]Activity, error)
 	UpdateActivityById(activity Activity) (Activity, error)
+	DeleteActivityById(activity Activity) error
 }
 
 type UseCaseInterface interface {
 	CreateActivity(activity Activity) (Activity, error)
 	GetActivityByUserId(userId int) ([]Activity, error)
 	UpdateActivityById(activity Activity) (Activity, error)
+	DeleteActivityById(activity Activity) error
 }

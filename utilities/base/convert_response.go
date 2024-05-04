@@ -13,7 +13,11 @@ func ConvertResponseCode(err error) int {
 		return http.StatusBadRequest
 	case constants.ErrUserNotFound:
 		return http.StatusNotFound
-	case constants.ErrGetAllDatabase:
+	case constants.ErrGetDatabase:
+		return http.StatusInternalServerError
+	case constants.ErrUpdateDatabase:
+		return http.StatusInternalServerError
+	case constants.ErrDeleteDatabase:
 		return http.StatusInternalServerError
 	case constants.ErrHashedPassword:
 		return http.StatusInternalServerError
