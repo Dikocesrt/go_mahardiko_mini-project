@@ -6,6 +6,7 @@ import (
 	userEntities "habit/entities/user"
 	"habit/utilities/base"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -65,4 +66,48 @@ func (userController *UserController) Login(c echo.Context) error {
 		Token: userFromDb.Token,
 	}
 	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Login", userResponse))
+}
+
+func (userController *UserController) UpdateProfileById(c echo.Context) error {
+	var userFromRequest request.UserProfileRequest
+	c.Bind(&userFromRequest)
+
+	file, _ := c.FormFile("profile_picture")
+
+	userId := c.Param("id")
+	id, _ := strconv.Atoi(userId)
+
+	userEntities := userEntities.User{
+		Id: id,
+		FullName: userFromRequest.FullName,
+		Username: userFromRequest.Username,
+		Email:    userFromRequest.Email,
+		Password: userFromRequest.Password,
+		Address:  userFromRequest.Address,
+		Bio:      userFromRequest.Bio,
+		PhoneNumber: userFromRequest.PhoneNumber,
+		Gender:   userFromRequest.Gender,
+		Age:      userFromRequest.Age,
+		ProfilePicture: userFromRequest.ProfilePicture,
+	}
+
+	userFromDb, err := userController.userUseCase.UpdateProfileById(&userEntities, file)
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	userResponse := response.UserProfileResponse{
+		Id:             userFromDb.Id,
+		FullName:       userFromDb.FullName,
+		Username:       userFromDb.Username,
+		Email:          userFromDb.Email,
+		Address:        userFromDb.Address,
+		Bio:            userFromDb.Bio,
+		PhoneNumber:    userFromDb.PhoneNumber,
+		Gender:         userFromDb.Gender,
+		Age:            userFromDb.Age,
+		ProfilePicture: userFromDb.ProfilePicture,
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Update Profile", userResponse))
 }
