@@ -39,6 +39,7 @@ func (userController *UserController) Register(c echo.Context) error {
 
 	userResponse := response.UserRegisterResponse{
 		Id:    newUser.Id,
+		FullName: newUser.FullName,
 		Username:  newUser.Username,
 		Email: newUser.Email,
 	}

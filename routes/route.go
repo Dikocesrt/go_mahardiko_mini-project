@@ -3,6 +3,7 @@ package routes
 import (
 	"habit/constants"
 	"habit/controllers/activity"
+	"habit/controllers/expert"
 	"habit/controllers/user"
 
 	myMiddleware "habit/middlewares"
@@ -14,19 +15,23 @@ import (
 type RouteController struct {
 	userController *user.UserController
 	activityController *activity.ActivityController
+	expertController *expert.ExpertController
 }
 
-func NewRoute(userController *user.UserController, activityController *activity.ActivityController) *RouteController {
+func NewRoute(userController *user.UserController, activityController *activity.ActivityController, expertController *expert.ExpertController) *RouteController {
 	return &RouteController{
 		userController: userController,
 		activityController: activityController,
+		expertController: expertController,
 	}
 }
 
 func (r *RouteController) InitRoute(e *echo.Echo) {
 	myMiddleware.LogMiddleware(e)
-	e.POST("/register", r.userController.Register)
-	e.POST("/login", r.userController.Login)
+	e.POST("/users/register", r.userController.Register)
+	e.POST("/users/login", r.userController.Login)
+
+	e.POST("/experts/register", r.expertController.Register)
 
 	eJwt := e.Group("/")
 	eJwt.Use(middleware.JWT([]byte(constants.SECRET_JWT)))
