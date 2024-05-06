@@ -6,6 +6,7 @@ import (
 	expertEntities "habit/entities/expert"
 	"habit/utilities/base"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -88,4 +89,60 @@ func (expertController *ExpertController) Login(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Login", expertResponse))
+}
+
+func (expertController *ExpertController) UpdateProfileExpertById(c echo.Context) error {
+	var expertFromRequest request.ExpertProfileRequest
+	c.Bind(&expertFromRequest)
+
+	file, _ := c.FormFile("profile_picture")
+
+	expertId := c.Param("id")
+	id, _ := strconv.Atoi(expertId)
+
+	expertEntities := expertEntities.Expert{
+		Id: id,
+		FullName: expertFromRequest.FullName,
+		Username: expertFromRequest.Username,
+		Email:    expertFromRequest.Email,
+		Password: expertFromRequest.Password,
+		Address:  expertFromRequest.Address,
+		Bio:      expertFromRequest.Bio,
+		PhoneNumber: expertFromRequest.PhoneNumber,
+		Gender:   expertFromRequest.Gender,
+		Age:      expertFromRequest.Age,
+		ProfilePicture: file.Filename,
+		Experience: expertFromRequest.Experience,
+		Fee:      expertFromRequest.Fee,
+		BankAccountTypeId: expertFromRequest.BankAccountTypeId,
+		BankAccount: expertEntities.BankAccount{
+			AccountName: expertFromRequest.AccountName,
+			AccountNumber: expertFromRequest.AccountNumber,
+		},
+	}
+
+	newExpert, err := expertController.expertUseCase.UpdateProfileExpertById(&expertEntities, file)
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	expertResponse := response.ExpertProfileResponse{
+		Id:       newExpert.Id,
+		Username: newExpert.Username,
+		Email:    newExpert.Email,
+		FullName: newExpert.FullName,
+		Address:  newExpert.Address,
+		Bio:      newExpert.Bio,
+		PhoneNumber: newExpert.PhoneNumber,
+		Gender:   newExpert.Gender,
+		Age:      newExpert.Age,
+		ProfilePicture: newExpert.ProfilePicture,
+		Experience: newExpert.Experience,
+		Fee:      newExpert.Fee,
+		BankAccount: response.BankAccountProfileResponse{
+			AccountName: newExpert.BankAccount.AccountName,
+			AccountNumber: newExpert.BankAccount.AccountNumber,
+		},
+	}
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Update", expertResponse))
 }

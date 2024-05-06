@@ -1,5 +1,7 @@
 package expert
 
+import "mime/multipart"
+
 type Expert struct {
 	Id                int
 	FullName          string
@@ -46,9 +48,11 @@ type Expertise struct {
 type RepositoryInterface interface {
 	Register(expert *Expert) (Expert, error)
 	Login(expert *Expert) (Expert, error)
+	UpdateProfileExpertById(expert *Expert) (Expert, int64, error)
 }
 
 type UseCaseInterface interface {
 	Register(expert *Expert) (Expert, error)
 	Login(expert *Expert) (Expert, error)
+	UpdateProfileExpertById(expert *Expert, file *multipart.FileHeader) (Expert, error)
 }

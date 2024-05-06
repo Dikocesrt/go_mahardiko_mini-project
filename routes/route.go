@@ -43,4 +43,9 @@ func (r *RouteController) InitRoute(e *echo.Echo) {
 	userGroup.DELETE("activities/:id", r.activityController.DeleteActivityById) //Delete Activity By Id
 	userGroup.GET("activities/users/:userId", r.activityController.GetActivityByUserId) //Get Activity By User Id
 	userGroup.PUT("users/:id", r.userController.UpdateProfileById) //Update Profile By Id
+
+	expertGroup := e.Group("/")
+	expertGroup.Use(middleware.JWT([]byte(constants.SECRET_JWT)))
+	expertGroup.Use(myMiddleware.ExpertOnlyMiddleware)
+	expertGroup.PUT("experts/:id", r.expertController.UpdateProfileExpertById) //Update Profile By Expert Id
 }
