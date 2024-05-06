@@ -21,6 +21,7 @@ type Expert struct {
 	BankAccount       BankAccount
 	ExpertiseId       int
 	Expertise         Expertise
+	Token             string
 }
 
 type BankAccount struct {
@@ -44,8 +45,10 @@ type Expertise struct {
 
 type RepositoryInterface interface {
 	Register(expert *Expert) (Expert, error)
+	Login(expert *Expert) (Expert, error)
 }
 
 type UseCaseInterface interface {
 	Register(expert *Expert) (Expert, error)
+	Login(expert *Expert) (Expert, error)
 }

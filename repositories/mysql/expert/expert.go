@@ -3,6 +3,7 @@ package expert
 import (
 	expertEntities "habit/entities/expert"
 
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -44,4 +45,25 @@ func (expertRepo *ExpertRepo) Register(expert *expertEntities.Expert) (expertEnt
 	newExpert.BankAccount = *newBankAccount
 	newExpert.Expertise = *newExpertise
 	return *newExpert, nil
+}
+
+func (expertRepo *ExpertRepo) Login(expert *expertEntities.Expert) (expertEntities.Expert, error) {
+	expertDb := FromExpertEntitiesToExpertDb(expert)
+
+	password := expertDb.Password
+	err := expertRepo.DB.Where("Username = ?", expertDb.Username).First(&expertDb).Error
+	if err != nil {
+		err := expertRepo.DB.Where("Email = ?", expertDb.Username).First(&expertDb).Error
+		if err != nil {
+			return expertEntities.Expert{}, err
+		}
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(expertDb.Password), []byte(password))
+	if err != nil {
+		return expertEntities.Expert{}, err
+	}
+
+	expertFromDb := expertDb.FromExpertDbToExpertEntities()
+	return *expertFromDb, nil
 }

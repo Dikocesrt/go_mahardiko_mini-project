@@ -3,6 +3,7 @@ package expert
 import (
 	"habit/constants"
 	expertEntities "habit/entities/expert"
+	"habit/middlewares"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -35,4 +36,20 @@ func (expertUseCase *ExpertUseCase) Register(expert *expertEntities.Expert) (exp
 	}
 
 	return newExpert, nil
+}
+
+func (expertUseCase *ExpertUseCase) Login(expert *expertEntities.Expert) (expertEntities.Expert, error) {
+	if expert.Username == "" || expert.Password == "" {
+		return expertEntities.Expert{}, constants.ErrEmptyInputLogin
+	}
+
+	expertDb, err := expertUseCase.repository.Login(expert)
+	if err != nil {
+		return expertEntities.Expert{}, constants.ErrUserNotFound
+	}
+
+	token, _ := middlewares.CreateTokenExpert(expertDb.Id)
+	expertDb.Token = token
+
+	return expertDb, nil
 }

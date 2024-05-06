@@ -65,3 +65,27 @@ func (expertController *ExpertController) Register(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Register", expertResponse))
 }
+
+func (expertController *ExpertController) Login(c echo.Context) error {
+	var expertFromRequest request.ExpertLoginRequest
+	c.Bind(&expertFromRequest)
+
+	expertEntities := expertEntities.Expert{
+		Username:    expertFromRequest.Username,
+		Password: expertFromRequest.Password,
+	}
+
+	newExpert, err := expertController.expertUseCase.Login(&expertEntities)
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	expertResponse := response.ExpertLoginResponse{
+		Id:       newExpert.Id,
+		Username: newExpert.Username,
+		Email:    newExpert.Email,
+		Token:    newExpert.Token,
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Login", expertResponse))
+}

@@ -28,19 +28,19 @@ func NewRoute(userController *user.UserController, activityController *activity.
 
 func (r *RouteController) InitRoute(e *echo.Echo) {
 	myMiddleware.LogMiddleware(e)
-	e.POST("/users/register", r.userController.Register)
-	e.POST("/users/login", r.userController.Login)
+	e.POST("/users/register", r.userController.Register) //Register User
+	e.POST("/users/login", r.userController.Login) //Login User
 
-	e.POST("/experts/register", r.expertController.Register)
+	e.POST("/experts/register", r.expertController.Register) //Register Expert
+	e.POST("/experts/login", r.expertController.Login) //Login Expert
 
-	eJwt := e.Group("/")
-	eJwt.Use(middleware.JWT([]byte(constants.SECRET_JWT)))
-	eJwt.POST("activities", r.activityController.CreateActivity)
-	eJwt.GET("activities/:id", r.activityController.GetActivityById)
-	eJwt.PUT("activities/:id", r.activityController.UpdateActivityById)
-	eJwt.DELETE("activities/:id", r.activityController.DeleteActivityById)
-
-	eJwt.GET("activities/users/:userId", r.activityController.GetActivityByUserId)
-
-	eJwt.PUT("users/:id", r.userController.UpdateProfileById)
+	userGroup := e.Group("/")
+	userGroup.Use(middleware.JWT([]byte(constants.SECRET_JWT)))
+	userGroup.Use(myMiddleware.UserOnlyMiddleware)
+	userGroup.POST("activities", r.activityController.CreateActivity) //Create Activity
+	userGroup.GET("activities/:id", r.activityController.GetActivityById) //Get Activity By Id
+	userGroup.PUT("activities/:id", r.activityController.UpdateActivityById) //Update Activity By Id
+	userGroup.DELETE("activities/:id", r.activityController.DeleteActivityById) //Delete Activity By Id
+	userGroup.GET("activities/users/:userId", r.activityController.GetActivityByUserId) //Get Activity By User Id
+	userGroup.PUT("users/:id", r.userController.UpdateProfileById) //Update Profile By Id
 }
