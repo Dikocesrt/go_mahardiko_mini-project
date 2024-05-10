@@ -49,10 +49,12 @@ type RepositoryInterface interface {
 	Register(expert *Expert) (Expert, error)
 	Login(expert *Expert) (Expert, error)
 	UpdateProfileExpertById(expert *Expert) (Expert, int64, error)
+	GetAllExperts() ([]Expert, error)
 }
 
 type UseCaseInterface interface {
 	Register(expert *Expert) (Expert, error)
 	Login(expert *Expert) (Expert, error)
 	UpdateProfileExpertById(expert *Expert, file *multipart.FileHeader) (Expert, error)
+	GetAllExperts() ([]Expert, error)
 }

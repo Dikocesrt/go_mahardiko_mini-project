@@ -15,3 +15,4 @@ var ErrEmptyInputUpdateProfile error = errors.New("fullname, username, email and
 var ErrUsernameAlreadyExist error = errors.New("username already exist")
 var ErrEmailAlreadyExist error = errors.New("email already exist")
 var ErrCloudinary error = errors.New("cloudinary url not found")
+var ErrGetAllExperts error = errors.New("failed get all experts")

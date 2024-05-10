@@ -120,3 +120,12 @@ func (expertUseCase *ExpertUseCase) UpdateProfileExpertById(expert *expertEntiti
 
 	return expertDb, nil
 }
+
+func (expertUseCase *ExpertUseCase) GetAllExperts() ([]expertEntities.Expert, error) {
+	expertDb, err := expertUseCase.repository.GetAllExperts()
+	if err != nil {
+		return []expertEntities.Expert{}, constants.ErrGetAllExperts
+	}
+
+	return expertDb, nil
+}

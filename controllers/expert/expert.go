@@ -146,3 +146,38 @@ func (expertController *ExpertController) UpdateProfileExpertById(c echo.Context
 	}
 	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Update", expertResponse))
 }
+
+func (expertController *ExpertController) GetAllExperts(c echo.Context) error {
+	expertEnt, err := expertController.expertUseCase.GetAllExperts()
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	expertResponse := make([]response.ExpertDetailResponse, len(expertEnt))
+	for i := 0; i < len(expertEnt); i++ {
+		expertResponse[i] = response.ExpertDetailResponse{
+			Id:       expertEnt[i].Id,
+			Username: expertEnt[i].Username,
+			Email:    expertEnt[i].Email,
+			FullName: expertEnt[i].FullName,
+			Address:  expertEnt[i].Address,
+			Bio:      expertEnt[i].Bio,
+			PhoneNumber: expertEnt[i].PhoneNumber,
+			Gender:   expertEnt[i].Gender,
+			Age:      expertEnt[i].Age,
+			ProfilePicture: expertEnt[i].ProfilePicture,
+			Experience: expertEnt[i].Experience,
+			Fee:      expertEnt[i].Fee,
+			BankAccount: response.BankAccountProfileResponse{
+				AccountName: expertEnt[i].BankAccount.AccountName,
+				AccountNumber: expertEnt[i].BankAccount.AccountNumber,
+			},
+			Expertise: response.ExpertiseDetailResponse{
+				Name: expertEnt[i].Expertise.Name,
+				Description: expertEnt[i].Expertise.Description,
+			},
+		}
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get All Expert", expertResponse))
+}

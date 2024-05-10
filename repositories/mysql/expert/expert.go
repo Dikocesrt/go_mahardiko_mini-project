@@ -145,3 +145,33 @@ func (expertRepo *ExpertRepo) UpdateProfileExpertById(expert *expertEntities.Exp
 	expertFromDb.BankAccount = *newBankAccount
 	return *expertFromDb, 0, nil
 }
+
+func (expertRepo *ExpertRepo) GetAllExperts() ([]expertEntities.Expert, error) {
+	var experts []Expert
+	err := expertRepo.DB.Find(&experts).Error
+	if err != nil {
+		return []expertEntities.Expert{}, err
+	}
+
+	var expertise []Expertise
+	err = expertRepo.DB.Find(&expertise).Error
+	if err != nil {
+		return []expertEntities.Expert{}, err
+	}
+
+	var bankAccount []BankAccount
+	err = expertRepo.DB.Find(&bankAccount).Error
+	if err != nil {
+		return []expertEntities.Expert{}, err
+	}
+
+	expertEntities := make([]expertEntities.Expert, len(experts))
+
+	for i := 0; i < len(experts); i++ {
+		expertEntities[i] = *experts[i].FromExpertDbToExpertEntities()
+		expertEntities[i].Expertise = *expertise[i].FromExpertiseDbToExpertiseEntities()
+		expertEntities[i].BankAccount = *bankAccount[i].FromBankAccountDbToBankAccountEntities()
+	}
+
+	return expertEntities, nil
+}
