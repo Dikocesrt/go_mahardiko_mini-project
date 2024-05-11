@@ -108,3 +108,14 @@ func (userRepo *UserRepo) UpdateProfileById(user *userEntities.User) (userEntiti
 
 	return *newUser, 0, nil
 }
+
+func (userRepo *UserRepo) GetUserById(user *userEntities.User) (userEntities.User, error) {
+	var userDb User
+	userDb.Id = user.Id
+	err := userRepo.DB.First(&userDb).Error
+	if err != nil {
+		return userEntities.User{}, err
+	}
+	newUser := userDb.FromUserDbToUserEntities()
+	return *newUser, nil
+}

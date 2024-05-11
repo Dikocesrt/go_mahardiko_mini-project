@@ -181,3 +181,41 @@ func (expertController *ExpertController) GetAllExperts(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get All Expert", expertResponse))
 }
+
+func (expertController *ExpertController) GetExpertById(c echo.Context) error {
+	expertId := c.Param("id")
+	id, _ := strconv.Atoi(expertId)
+
+	var expertEnt = expertEntities.Expert{}
+	expertEnt.Id = id
+
+	expertEnt, err := expertController.expertUseCase.GetExpertById(&expertEnt)
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	expertResponse := response.ExpertDetailResponse{
+		Id:       expertEnt.Id,
+		Username: expertEnt.Username,
+		Email:    expertEnt.Email,
+		FullName: expertEnt.FullName,
+		Address:  expertEnt.Address,
+		Bio:      expertEnt.Bio,
+		PhoneNumber: expertEnt.PhoneNumber,
+		Gender:   expertEnt.Gender,
+		Age:      expertEnt.Age,
+		ProfilePicture: expertEnt.ProfilePicture,
+		Experience: expertEnt.Experience,
+		Fee:      expertEnt.Fee,
+		BankAccount: response.BankAccountProfileResponse{
+			AccountName: expertEnt.BankAccount.AccountName,
+			AccountNumber: expertEnt.BankAccount.AccountNumber,
+		},
+		Expertise: response.ExpertiseDetailResponse{
+			Name: expertEnt.Expertise.Name,
+			Description: expertEnt.Expertise.Description,
+		},
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get Expert By Id", expertResponse))
+}

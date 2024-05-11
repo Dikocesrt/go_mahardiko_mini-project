@@ -50,6 +50,7 @@ type RepositoryInterface interface {
 	Login(expert *Expert) (Expert, error)
 	UpdateProfileExpertById(expert *Expert) (Expert, int64, error)
 	GetAllExperts() ([]Expert, error)
+	GetExpertById(expert *Expert) (Expert, error)
 }
 
 type UseCaseInterface interface {
@@ -57,4 +58,5 @@ type UseCaseInterface interface {
 	Login(expert *Expert) (Expert, error)
 	UpdateProfileExpertById(expert *Expert, file *multipart.FileHeader) (Expert, error)
 	GetAllExperts() ([]Expert, error)
+	GetExpertById(expert *Expert) (Expert, error)
 }

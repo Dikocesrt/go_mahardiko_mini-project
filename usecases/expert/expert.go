@@ -129,3 +129,12 @@ func (expertUseCase *ExpertUseCase) GetAllExperts() ([]expertEntities.Expert, er
 
 	return expertDb, nil
 }
+
+func (expertUseCase *ExpertUseCase) GetExpertById(expert *expertEntities.Expert) (expertEntities.Expert, error) {
+	expertDb, err := expertUseCase.repository.GetExpertById(expert)
+	if err != nil {
+		return expertEntities.Expert{}, constants.ErrGetAllExperts
+	}
+
+	return expertDb, nil
+}

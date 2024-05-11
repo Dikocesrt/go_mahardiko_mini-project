@@ -175,3 +175,31 @@ func (expertRepo *ExpertRepo) GetAllExperts() ([]expertEntities.Expert, error) {
 
 	return expertEntities, nil
 }
+
+func (expertRepo *ExpertRepo) GetExpertById(expert *expertEntities.Expert) (expertEntities.Expert, error) {
+	var expertDb Expert
+	expertDb.Id = expert.Id
+	err := expertRepo.DB.First(&expertDb).Error
+	if err != nil {
+		return expertEntities.Expert{}, err
+	}
+
+	var expertiseDb Expertise
+	expertiseDb.Id = expertDb.ExpertiseId
+	err = expertRepo.DB.First(&expertiseDb).Error
+	if err != nil {
+		return expertEntities.Expert{}, err
+	}
+
+	var bankAccountDb BankAccount
+	bankAccountDb.Id = expertDb.BankAccountId
+	err = expertRepo.DB.First(&bankAccountDb).Error
+	if err != nil {
+		return expertEntities.Expert{}, err
+	}
+
+	expertFromDb := expertDb.FromExpertDbToExpertEntities()
+	expertFromDb.Expertise = *expertiseDb.FromExpertiseDbToExpertiseEntities()
+	expertFromDb.BankAccount = *bankAccountDb.FromBankAccountDbToBankAccountEntities()
+	return *expertFromDb, nil
+}

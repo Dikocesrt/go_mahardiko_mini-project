@@ -121,3 +121,12 @@ func (userUseCase *UserUseCase) UpdateProfileById(user *userEntitites.User, file
 
 	return userFromDb, nil
 }
+
+func (userUseCase *UserUseCase) GetUserById(user *userEntitites.User) (userEntitites.User, error) {
+	userFromDb, err := userUseCase.repository.GetUserById(user)
+	if err != nil {
+		return userEntitites.User{}, constants.ErrUserNotFound
+	}
+
+	return userFromDb, nil
+}
