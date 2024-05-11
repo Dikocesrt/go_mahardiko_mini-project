@@ -8,27 +8,27 @@ import (
 	"gorm.io/gorm"
 )
 
-type UserRepo struct {
+type HireRepo struct {
 	DB *gorm.DB
 }
 
-func NewUserRepo(db *gorm.DB) *UserRepo {
-	return &UserRepo{
+func NewHireRepo(db *gorm.DB) *HireRepo {
+	return &HireRepo{
 		DB: db,
 	}
 }
 
-func (userRepo *UserRepo) CreateHire(hire *hireEntities.Hire) (hireEntities.Hire, error) {
+func (hireRepo *HireRepo) CreateHire(hire *hireEntities.Hire) (hireEntities.Hire, error) {
 	hireDb := FromHireEntitiesToHireDb(hire)
 
-	err := userRepo.DB.Create(&hireDb).Error
+	err := hireRepo.DB.Create(&hireDb).Error
 
 	if err != nil {
 		return hireEntities.Hire{}, err
 	}
 
 	var userDb user.User
-	err = userRepo.DB.Where("id = ?", hireDb.UserId).First(&userDb).Error
+	err = hireRepo.DB.Where("id = ?", hireDb.UserId).First(&userDb).Error
 	if err != nil {
 		return hireEntities.Hire{}, err
 	}
@@ -36,7 +36,7 @@ func (userRepo *UserRepo) CreateHire(hire *hireEntities.Hire) (hireEntities.Hire
 	userEnt := userDb.FromUserDbToUserEntities()
 
 	var expertDb expert.Expert
-	err = userRepo.DB.Where("id = ?", hireDb.ExpertId).First(&expertDb).Error
+	err = hireRepo.DB.Where("id = ?", hireDb.ExpertId).First(&expertDb).Error
 	if err != nil {
 		return hireEntities.Hire{}, err
 	}
@@ -50,9 +50,9 @@ func (userRepo *UserRepo) CreateHire(hire *hireEntities.Hire) (hireEntities.Hire
 	return *hireEnt, nil
 }
 
-func (userRepo *UserRepo) GetHiresByExpertId(id int) ([]hireEntities.Hire, error) {
+func (hireRepo *HireRepo) GetHiresByExpertId(id int) ([]hireEntities.Hire, error) {
 	var hiresDb []Hire
-	err := userRepo.DB.Where("expert_id = ?", id).Find(&hiresDb).Error
+	err := hireRepo.DB.Where("expert_id = ?", id).Find(&hiresDb).Error
 	if err != nil {
 		return []hireEntities.Hire{}, err
 	}
@@ -60,14 +60,14 @@ func (userRepo *UserRepo) GetHiresByExpertId(id int) ([]hireEntities.Hire, error
 	usersDb := make([]user.User, len(hiresDb))
 
 	for i := 0; i < len(hiresDb); i++ {
-		err = userRepo.DB.Where("id = ?", hiresDb[i].UserId).First(&usersDb[i]).Error
+		err = hireRepo.DB.Where("id = ?", hiresDb[i].UserId).First(&usersDb[i]).Error
 		if err != nil {
 			return []hireEntities.Hire{}, err
 		}
 	}
 
 	var expertDb expert.Expert
-	err = userRepo.DB.Where("id = ?", id).First(&expertDb).Error
+	err = hireRepo.DB.Where("id = ?", id).First(&expertDb).Error
 	if err != nil {
 		return []hireEntities.Hire{}, err
 	}
@@ -83,10 +83,10 @@ func (userRepo *UserRepo) GetHiresByExpertId(id int) ([]hireEntities.Hire, error
 	return hiresEnt, nil
 }
 
-func (userRepo *UserRepo) VerifyPayment(hire *hireEntities.Hire) (hireEntities.Hire, error) {
+func (hireRepo *HireRepo) VerifyPayment(hire *hireEntities.Hire) (hireEntities.Hire, error) {
 	var hireDbTemp Hire
 	hireDbTemp.Id = hire.Id
-	err := userRepo.DB.First(&hireDbTemp).Error
+	err := hireRepo.DB.First(&hireDbTemp).Error
 	if err != nil {
 		return hireEntities.Hire{}, err
 	}
@@ -96,19 +96,19 @@ func (userRepo *UserRepo) VerifyPayment(hire *hireEntities.Hire) (hireEntities.H
 	hireDbTemp.HireStart = hire.HireStart
 	hireDbTemp.HireEnd = hire.HireEnd
 
-	err = userRepo.DB.Save(&hireDbTemp).Error
+	err = hireRepo.DB.Save(&hireDbTemp).Error
 	if err != nil {
 		return hireEntities.Hire{}, err
 	}
 
 	var userDb user.User
-	err = userRepo.DB.Where("id = ?", hireDbTemp.UserId).First(&userDb).Error
+	err = hireRepo.DB.Where("id = ?", hireDbTemp.UserId).First(&userDb).Error
 	if err != nil {
 		return hireEntities.Hire{}, err
 	}
 
 	var expertDb expert.Expert
-	err = userRepo.DB.Where("id = ?", hireDbTemp.ExpertId).First(&expertDb).Error
+	err = hireRepo.DB.Where("id = ?", hireDbTemp.ExpertId).First(&expertDb).Error
 	if err != nil {
 		return hireEntities.Hire{}, err
 	}

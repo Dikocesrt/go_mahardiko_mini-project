@@ -17,35 +17,29 @@ Dengan kombinasi fitur-fitur ini, "Habit Tracker and Consultation" bertujuan unt
 
 ## Spesifikasi Fitur
 ### User
+- User dapat melakukan registrasi dan login
+- User dapat mengubah profilnya
 - User dapat mencatat berbagai aktivitas sehari-hari dengan detail aktivitasnya
 - User dapat mengubah aktivitas yang sudah tercatat
 - User dapat menghapus aktivitas yang sudah tercatat
 - User dapat melihat aktivitas yang sudah tercatat
-- User dapat mencari dan melihat detail ahli 
-- User dapat menghire ahli di berbagai bidang dalam suatu kurun waktu
+- User dapat melihat ahli 
+- User dapat menghire ahli di berbagai bidang dalam waktu 1 bulan
 - User dapat melakukan pembayaran ke ahli yang dihire melalui transfer manual
-- User dapat melakukan konsultasi melalui chat kepada ahli yang telah dihire
-- User dapat memberikan ulasan kepada ahli yang telah dihire
-- User dapat melihat riwayat hire ahli
-- User dapat chat dengan chatbot terkait aktivitas dan goalsnya
-- User dapat melihat artikel artikel informatif
-- User dapat melakukan report terkait ahli dan artikel dengan alasan yang jelas
+- User dapat chat dengan chatbot
 
 ### Ahli
+- Ahli dapat melakukan registrasi dan login
+- Ahli dapat mengubah profilnya
+- Ahli dapat melihat daftar customernya
+- Ahli dapat melihat aktivitas customernya
 - Ahli dapat memverifikasi pembayaran user yang ingin menghire dirinya
-- Ahli dapat melihat informasi aktivitas customernya
-- Ahli dapat melakukan chat dengan customer
-- Ahli dapat melihat ulasan terkait dirinya
-- Ahli dapat membuat artikel informatif untuk mempromosikan dirinya
-- Ahli dapat melihat artikel yang dia buat
-- Ahli dapat mengubah artikel yang dia buat
-- Ahli dapat menghapus artikel yang dia buat
-- Ahli dapat melakukan report terkait user dan artikel dengan alasan yang jelas
+
 
 ### Admin
-- Admin dapat mengelola akun dan artikel
-- Admin dapat melihat hasil report dari user dan ahli
-- Admin dapat melakukan takedown akun dan menghapus artikel apabila report yang dilakukan benar
+- Admin dapat mengelola tipe bank account yang tersedia
+- Admin dapat mengelola jenis expertise yang tersedia
+- Admin dapat mengelola jenis aktivitas yang tersedia
 
 ## Tech Stack
 - App Framework => Echo
@@ -54,4 +48,4 @@ Dengan kombinasi fitur-fitur ini, "Habit Tracker and Consultation" bertujuan unt
 - Deployment => GCP Cloud Run
 - Code Structure => Clean Architecture
 - Authentication => JWT
-- Other Tools => Integrasi Open AI untuk Chat Bot
+- Other Tools => Integrasi OpenAI untuk Chat Bot dan Integrasi Cloudinary untuk menyimpan gambar

@@ -3,16 +3,19 @@ package main
 import (
 	"habit/configs"
 	activityController "habit/controllers/activity"
+	adminController "habit/controllers/admin"
 	expertController "habit/controllers/expert"
 	hireController "habit/controllers/hire"
 	userController "habit/controllers/user"
 	"habit/repositories/mysql"
 	activityRepositories "habit/repositories/mysql/activity"
+	adminRepositories "habit/repositories/mysql/admin"
 	expertRepositories "habit/repositories/mysql/expert"
 	hireRepositories "habit/repositories/mysql/hire"
 	userRepositories "habit/repositories/mysql/user"
 	"habit/routes"
 	activityUseCase "habit/usecases/activity"
+	adminUseCase "habit/usecases/admin"
 	expertUseCase "habit/usecases/expert"
 	hireUseCase "habit/usecases/hire"
 	userUseCase "habit/usecases/user"
@@ -36,11 +39,15 @@ func main() {
 	expertUC := expertUseCase.NewExpertUseCase(expertRepo)
 	expertCont := expertController.NewExpertController(expertUC)
 
-	hireRepo := hireRepositories.NewUserRepo(db)
+	hireRepo := hireRepositories.NewHireRepo(db)
 	hireUC := hireUseCase.NewHireUseCase(hireRepo)
 	hireCont := hireController.NewHireController(hireUC)
 
-	route := routes.NewRoute(userCont, activityCont, expertCont, hireCont)
+	adminRepo := adminRepositories.NewAdminRepo(db)
+	adminUC := adminUseCase.NewAdminUseCase(adminRepo)
+	adminCont := adminController.NewAdminController(adminUC)
+
+	route := routes.NewRoute(userCont, activityCont, expertCont, hireCont, adminCont)
 
 	e := echo.New()
 	route.InitRoute(e)
