@@ -1,7 +1,6 @@
 package activity
 
 import (
-	"fmt"
 	"habit/controllers/activity/request"
 	"habit/controllers/activity/response"
 	activityEntities "habit/entities/activity"
@@ -42,8 +41,6 @@ func (activityController *ActivityController) CreateActivity(c echo.Context) err
 			ImageUrl:       activityReq.ActivityDetail.ImageUrl,
 		},
 	}
-
-	fmt.Printf("Food Details: %v\n", activityEnt.ActivityDetail.FoodDetails)
 
 	activityEnt, err := activityController.activityUseCase.CreateActivity(activityEnt, file)
 	if err != nil {

@@ -3,6 +3,7 @@ package routes
 import (
 	"habit/constants"
 	"habit/controllers/activity"
+	"habit/controllers/admin"
 	"habit/controllers/expert"
 	"habit/controllers/hire"
 	"habit/controllers/user"
@@ -18,14 +19,16 @@ type RouteController struct {
 	activityController *activity.ActivityController
 	expertController *expert.ExpertController
 	hireController *hire.HireController
+	adminController *admin.AdminController
 }
 
-func NewRoute(userController *user.UserController, activityController *activity.ActivityController, expertController *expert.ExpertController, hireController *hire.HireController) *RouteController {
+func NewRoute(userController *user.UserController, activityController *activity.ActivityController, expertController *expert.ExpertController, hireController *hire.HireController, adminController *admin.AdminController) *RouteController {
 	return &RouteController{
 		userController: userController,
 		activityController: activityController,
 		expertController: expertController,
 		hireController: hireController,
+		adminController: adminController,
 	}
 }
 
@@ -39,6 +42,10 @@ func (r *RouteController) InitRoute(e *echo.Echo) {
 	//experts auth
 	e.POST("/experts/register", r.expertController.Register) //Register Expert
 	e.POST("/experts/login", r.expertController.Login) //Login Expert
+
+	//admin auth
+	e.POST("/admin/register", r.adminController.Register) //Register Admin
+	e.POST("/admin/login", r.adminController.Login) //Login Admin
 
 	userGroup := e.Group("/users")
 	userGroup.Use(middleware.JWT([]byte(constants.SECRET_JWT)))
@@ -64,7 +71,22 @@ func (r *RouteController) InitRoute(e *echo.Echo) {
 	expertGroup.Use(myMiddleware.ExpertOnlyMiddleware)
 	expertGroup.PUT("/:id", r.expertController.UpdateProfileExpertById) //Update Profile By Expert Id
 	expertGroup.GET("/:id", r.expertController.GetExpertById) //Get Expert By Id
+
 	expertGroup.GET("/user/:id", r.userController.GetUserById) //Get User By User Id
+
+	expertGroup.GET("/activities/user/:userId", r.activityController.GetActivityByUserId) //Get Activity By User Id
+	
 	expertGroup.GET("/hires/expert/:expertId", r.hireController.GetHiresByExpertId) //Get Hires By Expert Id
 	expertGroup.PUT("/hires/verify/:hireId", r.hireController.VerifyPayment) //Verify Payment
+
+
+
+	adminGroup := e.Group("/admin")
+	adminGroup.Use(middleware.JWT([]byte(constants.SECRET_JWT)))
+	adminGroup.Use(myMiddleware.AdminOnlyMiddleware)
+	adminGroup.POST("/bank-account-types", r.adminController.CreateBankAccountType) //Create Bank Account Type
+	adminGroup.GET("/bank-account-types/:bankAccountTypeId", r.adminController.GetBankAccountTypeById) //Get Bank Account Type By Id
+	adminGroup.GET("/bank-account-types", r.adminController.GetAllBankAccountType) //Get All Bank Account Type
+	adminGroup.PUT("/bank-account-types/:bankAccountTypeId", r.adminController.UpdateBankAccountTypeById) //Update Bank Account Type By Id
+	adminGroup.DELETE("/bank-account-types/:bankAccountTypeId", r.adminController.DeleteBankAccountTypeById) //Delete Bank Account Type By Id
 }
