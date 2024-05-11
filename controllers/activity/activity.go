@@ -1,6 +1,7 @@
 package activity
 
 import (
+	"fmt"
 	"habit/controllers/activity/request"
 	"habit/controllers/activity/response"
 	activityEntities "habit/entities/activity"
@@ -25,6 +26,8 @@ func (activityController *ActivityController) CreateActivity(c echo.Context) err
 	var activityReq request.ActivityCreateRequest
 	c.Bind(&activityReq)
 
+	file, _ := c.FormFile("food_images")
+
 	activityEnt := activityEntities.Activity{
 		Title:          activityReq.Title,
 		ActivityStart:  activityReq.ActivityStart,
@@ -40,7 +43,9 @@ func (activityController *ActivityController) CreateActivity(c echo.Context) err
 		},
 	}
 
-	activityEnt, err := activityController.activityUseCase.CreateActivity(activityEnt)
+	fmt.Printf("Food Details: %v\n", activityEnt.ActivityDetail.FoodDetails)
+
+	activityEnt, err := activityController.activityUseCase.CreateActivity(activityEnt, file)
 	if err != nil {
 		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
 	}

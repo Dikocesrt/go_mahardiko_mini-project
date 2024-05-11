@@ -39,6 +39,7 @@ func (userController *UserController) Register(c echo.Context) error {
 
 	userResponse := response.UserRegisterResponse{
 		Id:    newUser.Id,
+		FullName: newUser.FullName,
 		Username:  newUser.Username,
 		Email: newUser.Email,
 	}
@@ -110,4 +111,33 @@ func (userController *UserController) UpdateProfileById(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Update Profile", userResponse))
+}
+
+func (userController *UserController) GetUserById(c echo.Context) error {
+	userId := c.Param("id")
+	id, _ := strconv.Atoi(userId)
+
+	var userEnt userEntities.User
+
+	userEnt.Id = id
+
+	userEnt, err := userController.userUseCase.GetUserById(&userEnt)
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	userResponse := response.UserProfileResponse{
+		Id:             userEnt.Id,
+		FullName:       userEnt.FullName,
+		Username:       userEnt.Username,
+		Email:          userEnt.Email,
+		Address:        userEnt.Address,
+		Bio:            userEnt.Bio,
+		PhoneNumber:    userEnt.PhoneNumber,
+		Gender:         userEnt.Gender,
+		Age:            userEnt.Age,
+		ProfilePicture: userEnt.ProfilePicture,
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get User", userResponse))
 }

@@ -33,6 +33,10 @@ func ConvertResponseCode(err error) int {
 		return http.StatusBadRequest
 	case constants.ErrCloudinary:
 		return http.StatusInternalServerError
+	case constants.ErrGetAllExperts:
+		return http.StatusInternalServerError
+	case constants.ErrUploadImage:
+		return http.StatusInternalServerError
 	default:
 		return http.StatusInternalServerError
 	}

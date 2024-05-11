@@ -100,7 +100,7 @@ func (userUseCase *UserUseCase) UpdateProfileById(user *userEntitites.User, file
 	if file != nil {
 		SecureURL, err := uploadImage(file)
 		if err != nil {
-			return userEntitites.User{}, err
+			return userEntitites.User{}, constants.ErrUploadImage
 		}
 
 		user.ProfilePicture = SecureURL
@@ -117,6 +117,15 @@ func (userUseCase *UserUseCase) UpdateProfileById(user *userEntitites.User, file
 
 	if kode == 3 {
 		return userEntitites.User{}, constants.ErrEmailAlreadyExist
+	}
+
+	return userFromDb, nil
+}
+
+func (userUseCase *UserUseCase) GetUserById(user *userEntitites.User) (userEntitites.User, error) {
+	userFromDb, err := userUseCase.repository.GetUserById(user)
+	if err != nil {
+		return userEntitites.User{}, constants.ErrUserNotFound
 	}
 
 	return userFromDb, nil

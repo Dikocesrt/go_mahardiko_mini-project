@@ -6,7 +6,7 @@ type ActivityCreateRequest struct {
 	ActivityFinish string         `json:"activity_finish" form:"activity_finish"`
 	UserId         int            `json:"user_id" form:"user_id"`
 	ActivityTypeId int            `json:"activity_type_id" form:"activity_type_id"`
-	ActivityDetail ActivityDetail `json:"activity_detail" form:"activity_detail"`
+	ActivityDetail ActivityDetail `json:"activity_detail"`
 }
 
 type ActivityDetail struct {
@@ -15,5 +15,5 @@ type ActivityDetail struct {
 	Intensity      string  `json:"intensity" form:"intensity"`
 	CaloriesBurned float64 `json:"calories_burned" form:"calories_burned"`
 	FoodDetails    string  `json:"food_details" form:"food_details"`
-	ImageUrl       string  `json:"image_url" form:"image_url"`
+	ImageUrl       string  `json:"food_images" form:"food_images"`
 }
