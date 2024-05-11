@@ -164,3 +164,104 @@ func (adminController *AdminController) DeleteBankAccountTypeById(c echo.Context
 
 	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Delete Bank Account Type", nil))
 }
+
+func (adminController *AdminController) CreateExpertise(c echo.Context) error {
+	var expertiseRequest request.AdminExpertiseRequest
+	c.Bind(&expertiseRequest)
+
+	var expertise expert.Expertise
+	expertise.Name = expertiseRequest.Name
+	expertise.Description = expertiseRequest.Description
+
+	expertise, err := adminController.adminUseCase.CreateExpertise(expertise)
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	expertiseResponse := response.AdminExpertiseResponse{
+		Id:          expertise.Id,
+		Name:        expertise.Name,
+		Description: expertise.Description,
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Create Expertise", expertiseResponse))
+}
+
+func (adminController *AdminController) GetAllExpertise(c echo.Context) error {
+	expertises, err := adminController.adminUseCase.GetAllExpertise()
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	expertiseResponse := make([]response.AdminExpertiseResponse, len(expertises))
+
+	for i := 0; i < len(expertises); i++ {
+		expertiseResponse[i].Id = expertises[i].Id
+		expertiseResponse[i].Name = expertises[i].Name
+		expertiseResponse[i].Description = expertises[i].Description
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get All Expertise", expertiseResponse))
+}
+
+func (adminController *AdminController) GetExpertiseById(c echo.Context) error {
+	expertiseId := c.Param("expertiseId")
+	id, _ := strconv.Atoi(expertiseId)
+
+	var expertise expert.Expertise
+	expertise.Id = id
+
+	expertise, err := adminController.adminUseCase.GetExpertiseById(expertise)
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	expertiseResponse := response.AdminExpertiseResponse{
+		Id:          expertise.Id,
+		Name:        expertise.Name,
+		Description: expertise.Description,
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get Expertise", expertiseResponse))
+}
+
+func (adminController *AdminController) UpdateExpertiseById(c echo.Context) error {
+	var expertiseRequest request.AdminExpertiseRequest
+	c.Bind(&expertiseRequest)
+
+	expertiseId := c.Param("expertiseId")
+	id, _ := strconv.Atoi(expertiseId)
+
+	var expertise expert.Expertise
+	expertise.Id = id
+	expertise.Name = expertiseRequest.Name
+	expertise.Description = expertiseRequest.Description
+
+	expertise, err := adminController.adminUseCase.UpdateExpertiseById(expertise)
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	expertiseResponse := response.AdminExpertiseResponse{
+		Id:          expertise.Id,
+		Name:        expertise.Name,
+		Description: expertise.Description,
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Update Expertise", expertiseResponse))
+}
+
+func (adminController *AdminController) DeleteExpertiseById(c echo.Context) error {
+	expertiseId := c.Param("expertiseId")
+	id, _ := strconv.Atoi(expertiseId)
+
+	var expertise expert.Expertise
+	expertise.Id = id
+
+	err := adminController.adminUseCase.DeleteExpertiseById(expertise)
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Delete Expertise", nil))
+}

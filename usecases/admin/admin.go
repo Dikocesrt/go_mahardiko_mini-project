@@ -87,3 +87,44 @@ func (adminUseCase *AdminUseCase) DeleteBankAccountTypeById(bankType expert.Bank
 	}
 	return nil
 }
+
+
+func (adminUseCase *AdminUseCase) CreateExpertise(expertise expert.Expertise) (expert.Expertise, error) {
+	newExpertise, err := adminUseCase.repository.CreateExpertise(expertise)
+	if err != nil {
+		return expert.Expertise{}, err
+	}
+	return newExpertise, nil
+}
+
+func (adminUseCase *AdminUseCase) GetAllExpertise() ([]expert.Expertise, error) {
+	newExpertise, err := adminUseCase.repository.GetAllExpertise()
+	if err != nil {
+		return []expert.Expertise{}, err
+	}
+	return newExpertise, nil
+}
+
+func (adminUseCase *AdminUseCase) GetExpertiseById(expertise expert.Expertise) (expert.Expertise, error) {
+	newExpertise, err := adminUseCase.repository.GetExpertiseById(expertise)
+	if err != nil {
+		return expert.Expertise{}, err
+	}
+	return newExpertise, nil
+}
+
+func (adminUseCase *AdminUseCase) UpdateExpertiseById(expertise expert.Expertise) (expert.Expertise, error) {
+	newExpertise, err := adminUseCase.repository.UpdateExpertiseById(expertise)
+	if err != nil {
+		return expert.Expertise{}, err
+	}
+	return newExpertise, nil
+}
+
+func (adminUseCase *AdminUseCase) DeleteExpertiseById(expertise expert.Expertise) error {
+	err := adminUseCase.repository.DeleteExpertiseById(expertise)
+	if err != nil {
+		return err
+	}
+	return nil
+}

@@ -89,4 +89,10 @@ func (r *RouteController) InitRoute(e *echo.Echo) {
 	adminGroup.GET("/bank-account-types", r.adminController.GetAllBankAccountType) //Get All Bank Account Type
 	adminGroup.PUT("/bank-account-types/:bankAccountTypeId", r.adminController.UpdateBankAccountTypeById) //Update Bank Account Type By Id
 	adminGroup.DELETE("/bank-account-types/:bankAccountTypeId", r.adminController.DeleteBankAccountTypeById) //Delete Bank Account Type By Id
+
+	adminGroup.POST("/expertises", r.adminController.CreateExpertise) //Create Expertise
+	adminGroup.GET("/expertises", r.adminController.GetAllExpertise) //Get All Expertise
+	adminGroup.GET("/expertise/:expertiseId", r.adminController.GetExpertiseById) //Get Expertise By Id
+	adminGroup.PUT("/expertise/:expertiseId", r.adminController.UpdateExpertiseById) //Update Expertise By Id
+	adminGroup.DELETE("/expertise/:expertiseId", r.adminController.DeleteExpertiseById) //Delete Expertise By Id
 }

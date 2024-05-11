@@ -19,17 +19,6 @@ func NewAdminRepo(db *gorm.DB) *AdminRepo {
 	}
 }
 
-func (adminRepo *AdminRepo) CreateBankAccountType(bankType expertEntities.BankAccountType) (expertEntities.BankAccountType, error) {
-	var bankTypeDb expertDb.BankAccountType
-	bankTypeDb.Name = bankType.Name
-	err := adminRepo.DB.Create(&bankTypeDb).Error
-	if err != nil {
-		return expertEntities.BankAccountType{}, err
-	}
-	bankType.Id = bankTypeDb.Id
-	return bankType, nil
-}
-
 func (adminRepo *AdminRepo) Register(admin *adminEntities.Admin) (adminEntities.Admin, error) {
 	var adminDb Admin
 	adminDb.Username = admin.Username
@@ -64,6 +53,17 @@ func (adminRepo *AdminRepo) Login(admin *adminEntities.Admin) (adminEntities.Adm
 	admin.Username = adminDb.Username
 	admin.Email = adminDb.Email
 	return *admin, nil
+}
+
+func (adminRepo *AdminRepo) CreateBankAccountType(bankType expertEntities.BankAccountType) (expertEntities.BankAccountType, error) {
+	var bankTypeDb expertDb.BankAccountType
+	bankTypeDb.Name = bankType.Name
+	err := adminRepo.DB.Create(&bankTypeDb).Error
+	if err != nil {
+		return expertEntities.BankAccountType{}, err
+	}
+	bankType.Id = bankTypeDb.Id
+	return bankType, nil
 }
 
 func (adminRepo *AdminRepo) GetBankAccountTypeById(bankType expertEntities.BankAccountType) (expertEntities.BankAccountType, error) {
@@ -109,6 +109,67 @@ func (adminRepo *AdminRepo) DeleteBankAccountTypeById(bankType expertEntities.Ba
 	var bankTypeDb expertDb.BankAccountType
 	bankTypeDb.Id = bankType.Id
 	err := adminRepo.DB.Delete(&bankTypeDb).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (adminRepo *AdminRepo) CreateExpertise(expertise expertEntities.Expertise) (expertEntities.Expertise, error) {
+	var expertiseDb expertDb.Expertise
+	expertiseDb.Name = expertise.Name
+	expertiseDb.Description = expertise.Description
+	err := adminRepo.DB.Create(&expertiseDb).Error
+	if err != nil {
+		return expertEntities.Expertise{}, err
+	}
+	expertise.Id = expertiseDb.Id
+	return expertise, nil
+}
+
+func (adminRepo *AdminRepo) GetAllExpertise() ([]expertEntities.Expertise, error) {
+	var expertiseDb []expertDb.Expertise
+	err := adminRepo.DB.Find(&expertiseDb).Error
+	if err != nil {
+		return []expertEntities.Expertise{}, err
+	}
+	expertise := make([]expertEntities.Expertise, len(expertiseDb))
+	for i := 0; i < len(expertiseDb); i++ {
+		expertise[i].Id = expertiseDb[i].Id
+		expertise[i].Name = expertiseDb[i].Name
+		expertise[i].Description = expertiseDb[i].Description
+	}
+	return expertise, nil
+}
+
+func (adminRepo *AdminRepo) GetExpertiseById(expertise expertEntities.Expertise) (expertEntities.Expertise, error) {
+	var expertiseDb expertDb.Expertise
+	expertiseDb.Id = expertise.Id
+	err := adminRepo.DB.First(&expertiseDb).Error
+	if err != nil {
+		return expertEntities.Expertise{}, err
+	}
+	expertise.Name = expertiseDb.Name
+	expertise.Description = expertiseDb.Description
+	return expertise, nil
+}
+
+func (adminRepo *AdminRepo) UpdateExpertiseById(expertise expertEntities.Expertise) (expertEntities.Expertise, error) {
+	var expertiseDb expertDb.Expertise
+	expertiseDb.Id = expertise.Id
+	expertiseDb.Name = expertise.Name
+	expertiseDb.Description = expertise.Description
+	err := adminRepo.DB.Save(&expertiseDb).Error
+	if err != nil {
+		return expertEntities.Expertise{}, err
+	}
+	return expertise, nil
+}
+
+func (adminRepo *AdminRepo) DeleteExpertiseById(expertise expertEntities.Expertise) error {
+	var expertiseDb expertDb.Expertise
+	expertiseDb.Id = expertise.Id
+	err := adminRepo.DB.Delete(&expertiseDb).Error
 	if err != nil {
 		return err
 	}

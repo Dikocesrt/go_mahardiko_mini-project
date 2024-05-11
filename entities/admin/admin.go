@@ -18,6 +18,11 @@ type RepositoryInterface interface {
 	GetAllBankAccountType() ([]expert.BankAccountType, error)
 	UpdateBankAccountTypeById(bankType expert.BankAccountType) (expert.BankAccountType, error)
 	DeleteBankAccountTypeById(bankType expert.BankAccountType) (error)
+	CreateExpertise(expertise expert.Expertise) (expert.Expertise, error)
+	GetExpertiseById(expertise expert.Expertise) (expert.Expertise, error)
+	GetAllExpertise() ([]expert.Expertise, error)
+	UpdateExpertiseById(expertise expert.Expertise) (expert.Expertise, error)
+	DeleteExpertiseById(expertise expert.Expertise) (error)
 }
 
 type UseCaseInterface interface {
@@ -28,4 +33,9 @@ type UseCaseInterface interface {
 	GetAllBankAccountType() ([]expert.BankAccountType, error)
 	UpdateBankAccountTypeById(bankType expert.BankAccountType) (expert.BankAccountType, error)
 	DeleteBankAccountTypeById(bankType expert.BankAccountType) (error)
+	CreateExpertise(expertise expert.Expertise) (expert.Expertise, error)
+	GetExpertiseById(expertise expert.Expertise) (expert.Expertise, error)
+	GetAllExpertise() ([]expert.Expertise, error)
+	UpdateExpertiseById(expertise expert.Expertise) (expert.Expertise, error)
+	DeleteExpertiseById(expertise expert.Expertise) (error)
 }
