@@ -5,6 +5,7 @@ import (
 	"habit/configs"
 	hireEntities "habit/entities/hire"
 	"mime/multipart"
+	"time"
 
 	"habit/constants"
 
@@ -61,7 +62,7 @@ func (hireUseCase *HireUseCase) CreateHire(hire *hireEntities.Hire, file *multip
 		hire.PaymentImage = SecureURL
 	}
 
-	hire.PaymentStatus = "Pending"
+	hire.PaymentStatus = "pending"
 
 	hireFromDb, err := hireUseCase.repository.CreateHire(hire)
 	if err != nil {
@@ -78,4 +79,16 @@ func (hireUseCase *HireUseCase) GetHiresByExpertId(id int) ([]hireEntities.Hire,
 	}
 
 	return hiresFromDb, nil
+}
+
+func (hireUseCase *HireUseCase) VerifyPayment(hire *hireEntities.Hire) (hireEntities.Hire, error) {
+	hire.HireStart = time.Now()
+	hire.HireEnd = time.Now().AddDate(0, 0, 30)
+	hire.PaymentStatus = "paid"
+	hireFromDb, err := hireUseCase.repository.VerifyPayment(hire)
+	if err != nil {
+		return hireEntities.Hire{}, constants.ErrGetDatabase
+	}
+
+	return hireFromDb, nil
 }

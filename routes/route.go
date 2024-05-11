@@ -66,4 +66,5 @@ func (r *RouteController) InitRoute(e *echo.Echo) {
 	expertGroup.GET("/:id", r.expertController.GetExpertById) //Get Expert By Id
 	expertGroup.GET("/user/:id", r.userController.GetUserById) //Get User By User Id
 	expertGroup.GET("/hires/expert/:expertId", r.hireController.GetHiresByExpertId) //Get Hires By Expert Id
+	expertGroup.PUT("/hires/verify/:hireId", r.hireController.VerifyPayment) //Verify Payment
 }

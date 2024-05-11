@@ -82,3 +82,40 @@ func (userRepo *UserRepo) GetHiresByExpertId(id int) ([]hireEntities.Hire, error
 
 	return hiresEnt, nil
 }
+
+func (userRepo *UserRepo) VerifyPayment(hire *hireEntities.Hire) (hireEntities.Hire, error) {
+	var hireDbTemp Hire
+	hireDbTemp.Id = hire.Id
+	err := userRepo.DB.First(&hireDbTemp).Error
+	if err != nil {
+		return hireEntities.Hire{}, err
+	}
+
+	hireDbTemp.PaymentStatus = hire.PaymentStatus
+	hireDbTemp.MeetUrl = hire.MeetUrl
+	hireDbTemp.HireStart = hire.HireStart
+	hireDbTemp.HireEnd = hire.HireEnd
+
+	err = userRepo.DB.Save(&hireDbTemp).Error
+	if err != nil {
+		return hireEntities.Hire{}, err
+	}
+
+	var userDb user.User
+	err = userRepo.DB.Where("id = ?", hireDbTemp.UserId).First(&userDb).Error
+	if err != nil {
+		return hireEntities.Hire{}, err
+	}
+
+	var expertDb expert.Expert
+	err = userRepo.DB.Where("id = ?", hireDbTemp.ExpertId).First(&expertDb).Error
+	if err != nil {
+		return hireEntities.Hire{}, err
+	}
+
+	hireEnt := hireDbTemp.FromHireDbToHireEntities()
+	hireEnt.User = *userDb.FromUserDbToUserEntities()
+	hireEnt.Expert = *expertDb.FromExpertDbToExpertEntities()
+
+	return *hireEnt, nil
+}

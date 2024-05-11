@@ -2,6 +2,7 @@ package hire
 
 import (
 	hireEntities "habit/entities/hire"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -9,12 +10,12 @@ import (
 type Hire struct {
 	gorm.Model
 	Id            int `gorm:"primaryKey:autoIncrement"`
-	HireStart     string
-	HireEnd       string
+	HireStart     time.Time `gorm:"type:date"`
+	HireEnd       time.Time `gorm:"type:date"`
 	TotalFee      int
-	PaymentStatus string
+	PaymentStatus string `gorm:"type:ENUM('pending', 'paid')"`
 	PaymentImage  string
-	MeetTime      string
+	MeetTime      string `gorm:"type:time"`
 	MeetDay       string
 	MeetUrl       string
 	UserId        int `gorm:"index"`

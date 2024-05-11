@@ -1,13 +1,15 @@
 package response
 
+import "time"
+
 type HireDetailResponse struct {
 	Id            int                  `json:"id"`
-	HireStart     string               `json:"hire_start"`
-	HireEnd       string               `json:"hire_end"`
+	HireStart     time.Time                 `json:"hire_start"`
+	HireEnd       time.Time                 `json:"hire_end"`
 	TotalFee      int                  `json:"total_fee"`
 	PaymentStatus string               `json:"payment_status"`
 	PaymentImage  string               `json:"payment_image"`
-	MeetTime      string               `json:"meet_time"`
+	MeetTime      string              `json:"meet_time"`
 	MeetDay       string               `json:"meet_day"`
 	MeetUrl       string               `json:"meet_url"`
 	User          UserDetailResponse   `json:"user"`
