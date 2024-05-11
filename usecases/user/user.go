@@ -100,7 +100,7 @@ func (userUseCase *UserUseCase) UpdateProfileById(user *userEntitites.User, file
 	if file != nil {
 		SecureURL, err := uploadImage(file)
 		if err != nil {
-			return userEntitites.User{}, err
+			return userEntitites.User{}, constants.ErrUploadImage
 		}
 
 		user.ProfilePicture = SecureURL

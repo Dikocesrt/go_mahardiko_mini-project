@@ -1,5 +1,7 @@
 package activity
 
+import "mime/multipart"
+
 type Activity struct {
 	Id             int
 	Title          string
@@ -35,7 +37,7 @@ type RepositoryInterface interface {
 }
 
 type UseCaseInterface interface {
-	CreateActivity(activity Activity) (Activity, error)
+	CreateActivity(activity Activity, file *multipart.FileHeader) (Activity, error)
 	GetActivityByUserId(userId int) ([]Activity, error)
 	GetActivityById(activity Activity) (Activity, error)
 	UpdateActivityById(activity Activity) (Activity, error)

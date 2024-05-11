@@ -46,7 +46,7 @@ func (r *RouteController) InitRoute(e *echo.Echo) {
 	userGroup.GET("/activities/:id", r.activityController.GetActivityById) //Get Activity By Id
 	userGroup.PUT("/activities/:id", r.activityController.UpdateActivityById) //Update Activity By Id
 	userGroup.DELETE("/activities/:id", r.activityController.DeleteActivityById) //Delete Activity By Id
-	userGroup.GET("/activities/users/:userId", r.activityController.GetActivityByUserId) //Get Activity By User Id
+	userGroup.GET("/activities/user/:userId", r.activityController.GetActivityByUserId) //Get Activity By User Id
 
 	//users
 	userGroup.PUT("/:id", r.userController.UpdateProfileById) //Update Profile By Id

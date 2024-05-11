@@ -138,6 +138,7 @@ func (activityRepo *ActivityRepo) UpdateActivityById(activity activityEntities.A
 	}
 
 	activityDb.CreatedAt = activityTemp.CreatedAt
+	activityDb.UserId = activityTemp.UserId
 
 	activityDb.ActivityDetailId = activityTemp.ActivityDetailId
 	err = activityRepo.DB.Save(&activityDb).Error
@@ -151,6 +152,16 @@ func (activityRepo *ActivityRepo) UpdateActivityById(activity activityEntities.A
 	}
 
 	activityDetailDb.Id = activityDb.ActivityDetailId
+	var activityDetailTemp ActivityDetail
+
+	err = activityRepo.DB.Where("id = ?", activityDetailDb.Id).First(&activityDetailTemp).Error
+	if err != nil {
+		return activityEntities.Activity{}, err
+	}
+
+	if activityDetailDb.ImageUrl == "" {
+		activityDetailDb.ImageUrl = activityDetailTemp.ImageUrl
+	}
 
 	err = activityRepo.DB.Save(&activityDetailDb).Error
 	if err != nil {
