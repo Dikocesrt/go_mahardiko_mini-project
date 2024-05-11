@@ -37,6 +37,8 @@ func ConvertResponseCode(err error) int {
 		return http.StatusInternalServerError
 	case constants.ErrUploadImage:
 		return http.StatusInternalServerError
+	case constants.ErrEmptyImageInput:
+		return http.StatusBadRequest
 	default:
 		return http.StatusInternalServerError
 	}

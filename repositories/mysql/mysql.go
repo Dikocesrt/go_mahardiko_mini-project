@@ -4,6 +4,7 @@ import (
 	"fmt"
 	activityDb "habit/repositories/mysql/activity"
 	expertDb "habit/repositories/mysql/expert"
+	hireDb "habit/repositories/mysql/hire"
 	userDb "habit/repositories/mysql/user"
 
 	"gorm.io/driver/mysql"
@@ -36,5 +37,5 @@ func ConnectDB(config Config) *gorm.DB {
 }
 
 func InitMigrate(db *gorm.DB) {
-	db.AutoMigrate(&userDb.User{}, &activityDb.Activity{}, &activityDb.ActivityType{}, &activityDb.ActivityDetail{}, &expertDb.Expert{}, &expertDb.BankAccount{}, &expertDb.BankAccountType{}, &expertDb.Expertise{})
+	db.AutoMigrate(&userDb.User{}, &activityDb.Activity{}, &activityDb.ActivityType{}, &activityDb.ActivityDetail{}, &expertDb.Expert{}, &expertDb.BankAccount{}, &expertDb.BankAccountType{}, &expertDb.Expertise{}, &hireDb.Hire{})
 }
