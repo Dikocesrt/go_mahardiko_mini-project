@@ -103,3 +103,43 @@ func (activityUseCase *ActivityUseCase) DeleteActivityById(activity activityEnti
 	}
 	return nil
 }
+
+func (activityUseCase *ActivityUseCase) CreateActivityType(activityType activityEntities.ActivityType) (activityEntities.ActivityType, error) {
+	activityType, err := activityUseCase.repository.CreateActivityType(activityType)
+	if err != nil {
+		return activityEntities.ActivityType{}, constants.ErrGetDatabase
+	}
+	return activityType, nil
+}
+
+func (activityUseCase *ActivityUseCase) GetAllActivityType() ([]activityEntities.ActivityType, error) {
+	activityTypes, err := activityUseCase.repository.GetAllActivityType()
+	if err != nil {
+		return []activityEntities.ActivityType{}, constants.ErrGetDatabase
+	}
+	return activityTypes, nil
+}
+
+func (activityUseCase *ActivityUseCase) GetActivityTypeById(activityType activityEntities.ActivityType) (activityEntities.ActivityType, error) {
+	activityType, err := activityUseCase.repository.GetActivityTypeById(activityType)
+	if err != nil {
+		return activityEntities.ActivityType{}, constants.ErrGetDatabase
+	}
+	return activityType, nil
+}
+
+func (activityUseCase *ActivityUseCase) UpdateActivityTypeById(activityType activityEntities.ActivityType) (activityEntities.ActivityType, error) {
+	activityType, err := activityUseCase.repository.UpdateActivityTypeById(activityType)
+	if err != nil {
+		return activityEntities.ActivityType{}, constants.ErrGetDatabase
+	}
+	return activityType, nil
+}
+
+func (activityUseCase *ActivityUseCase) DeleteActivityTypeById(activityType activityEntities.ActivityType) error {
+	err := activityUseCase.repository.DeleteActivityTypeById(activityType)
+	if err != nil {
+		return constants.ErrDeleteDatabase
+	}
+	return nil
+}

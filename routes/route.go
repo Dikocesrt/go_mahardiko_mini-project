@@ -88,4 +88,9 @@ func (r *RouteController) InitRoute(e *echo.Echo) {
 	adminGroup.GET("/expertise/:expertiseId", r.expertController.GetExpertiseById) //Get Expertise By Id
 	adminGroup.PUT("/expertise/:expertiseId", r.expertController.UpdateExpertiseById) //Update Expertise By Id
 	adminGroup.DELETE("/expertise/:expertiseId", r.expertController.DeleteExpertiseById) //Delete Expertise By Id
+	adminGroup.POST("/activity-types", r.activityController.CreateActivityType) //Create Activity Type
+	adminGroup.GET("/activity-types", r.activityController.GetAllActivityType) //Get All Activity Type
+	adminGroup.GET("/activity-type/:activityTypeId", r.activityController.GetActivityTypeById) //Get Activity Type By Id
+	adminGroup.PUT("/activity-type/:activityTypeId", r.activityController.UpdateActivityTypeById) //Update Activity Type By Id
+	adminGroup.DELETE("/activity-type/:activityTypeId", r.activityController.DeleteActivityTypeById) //Delete Activity Type By Id
 }

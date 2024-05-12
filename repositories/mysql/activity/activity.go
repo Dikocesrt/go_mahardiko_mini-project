@@ -213,3 +213,87 @@ func (activityRepo *ActivityRepo) DeleteActivityById(activity activityEntities.A
 
 	return nil
 }
+
+func (ActivityRepo *ActivityRepo) CreateActivityType(activityType activityEntities.ActivityType) (activityEntities.ActivityType, error) {
+	activityTypeDb := ActivityType {
+		Name:        activityType.Name,
+		Description: activityType.Description,
+	}
+
+	err := ActivityRepo.DB.Create(&activityTypeDb).Error
+	if err != nil {
+		return activityEntities.ActivityType{}, err
+	}
+
+	activityEnt := activityEntities.ActivityType{
+		Id:          activityTypeDb.Id,
+		Name:        activityTypeDb.Name,
+		Description: activityTypeDb.Description,
+	}
+
+	return activityEnt, nil
+}
+
+func (activityRepo *ActivityRepo) GetAllActivityType() ([]activityEntities.ActivityType, error) {
+	var activityTypeDbs []ActivityType
+	err := activityRepo.DB.Find(&activityTypeDbs).Error
+	if err != nil {
+		return []activityEntities.ActivityType{}, err
+	}
+
+	activityTypeEnts := make([]activityEntities.ActivityType, len(activityTypeDbs))
+
+	for i := 0; i < len(activityTypeDbs); i++ {
+		activityTypeEnts[i] = activityEntities.ActivityType{
+			Id:          activityTypeDbs[i].Id,
+			Name:        activityTypeDbs[i].Name,
+			Description: activityTypeDbs[i].Description,
+		}
+	}
+
+	return activityTypeEnts, nil
+}
+
+func (activityRepo *ActivityRepo) GetActivityTypeById(activityType activityEntities.ActivityType) (activityEntities.ActivityType, error) {
+	var activityTypeDb ActivityType
+	activityTypeDb.Id = activityType.Id
+
+	err := activityRepo.DB.Where("id = ?", activityTypeDb.Id).First(&activityTypeDb).Error
+	if err != nil {
+		return activityEntities.ActivityType{}, err
+	}
+
+	activityTypeEnt := activityEntities.ActivityType{
+		Id:          activityTypeDb.Id,
+		Name:        activityTypeDb.Name,
+		Description: activityTypeDb.Description,
+	}
+
+	return activityTypeEnt, nil
+}
+
+func (activityRepo *ActivityRepo) UpdateActivityTypeById(activityType activityEntities.ActivityType) (activityEntities.ActivityType, error) {
+	var activityTypeDb ActivityType
+	activityTypeDb.Id = activityType.Id
+	activityTypeDb.Name = activityType.Name
+	activityTypeDb.Description = activityType.Description
+
+	err := activityRepo.DB.Save(&activityTypeDb).Error
+	if err != nil {
+		return activityEntities.ActivityType{}, err
+	}
+
+	return activityType, nil
+}
+
+func (activityRepo *ActivityRepo) DeleteActivityTypeById(activityType activityEntities.ActivityType) error {
+	var activityTypeDb ActivityType
+	activityTypeDb.Id = activityType.Id
+
+	err := activityRepo.DB.Delete(&activityTypeDb).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
