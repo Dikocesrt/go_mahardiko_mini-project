@@ -55,13 +55,10 @@ func (r *RouteController) InitRoute(e *echo.Echo) {
 	userGroup.PUT("/activities/:id", r.activityController.UpdateActivityById) //Update Activity By Id
 	userGroup.DELETE("/activities/:id", r.activityController.DeleteActivityById) //Delete Activity By Id
 	userGroup.GET("/activities/user/:userId", r.activityController.GetActivityByUserId) //Get Activity By User Id
-
 	userGroup.GET("/:id", r.userController.GetUserById) //Get User By Id
 	userGroup.PUT("/:id", r.userController.UpdateProfileById) //Update Profile By Id
-
 	userGroup.GET("/experts", r.expertController.GetAllExperts) //Get All Experts
 	userGroup.GET("/expert/:id", r.expertController.GetExpertById) //Get Expert By Expert Id
-
 	userGroup.POST("/hires", r.hireController.CreateHire) //Create Hire
 
 
@@ -71,11 +68,8 @@ func (r *RouteController) InitRoute(e *echo.Echo) {
 	expertGroup.Use(myMiddleware.ExpertOnlyMiddleware)
 	expertGroup.PUT("/:id", r.expertController.UpdateProfileExpertById) //Update Profile By Expert Id
 	expertGroup.GET("/:id", r.expertController.GetExpertById) //Get Expert By Id
-
 	expertGroup.GET("/user/:id", r.userController.GetUserById) //Get User By User Id
-
 	expertGroup.GET("/activities/user/:userId", r.activityController.GetActivityByUserId) //Get Activity By User Id
-	
 	expertGroup.GET("/hires/expert/:expertId", r.hireController.GetHiresByExpertId) //Get Hires By Expert Id
 	expertGroup.PUT("/hires/verify/:hireId", r.hireController.VerifyPayment) //Verify Payment
 
@@ -84,15 +78,14 @@ func (r *RouteController) InitRoute(e *echo.Echo) {
 	adminGroup := e.Group("/admin")
 	adminGroup.Use(middleware.JWT([]byte(constants.SECRET_JWT)))
 	adminGroup.Use(myMiddleware.AdminOnlyMiddleware)
-	adminGroup.POST("/bank-account-types", r.adminController.CreateBankAccountType) //Create Bank Account Type
-	adminGroup.GET("/bank-account-types/:bankAccountTypeId", r.adminController.GetBankAccountTypeById) //Get Bank Account Type By Id
-	adminGroup.GET("/bank-account-types", r.adminController.GetAllBankAccountType) //Get All Bank Account Type
-	adminGroup.PUT("/bank-account-types/:bankAccountTypeId", r.adminController.UpdateBankAccountTypeById) //Update Bank Account Type By Id
-	adminGroup.DELETE("/bank-account-types/:bankAccountTypeId", r.adminController.DeleteBankAccountTypeById) //Delete Bank Account Type By Id
-
-	adminGroup.POST("/expertises", r.adminController.CreateExpertise) //Create Expertise
-	adminGroup.GET("/expertises", r.adminController.GetAllExpertise) //Get All Expertise
-	adminGroup.GET("/expertise/:expertiseId", r.adminController.GetExpertiseById) //Get Expertise By Id
-	adminGroup.PUT("/expertise/:expertiseId", r.adminController.UpdateExpertiseById) //Update Expertise By Id
-	adminGroup.DELETE("/expertise/:expertiseId", r.adminController.DeleteExpertiseById) //Delete Expertise By Id
+	adminGroup.POST("/bank-account-types", r.expertController.CreateBankAccountType) //Create Bank Account Type
+	adminGroup.GET("/bank-account-types/:bankAccountTypeId", r.expertController.GetBankAccountTypeById) //Get Bank Account Type By Id
+	adminGroup.GET("/bank-account-types", r.expertController.GetAllBankAccountType) //Get All Bank Account Type
+	adminGroup.PUT("/bank-account-types/:bankAccountTypeId", r.expertController.UpdateBankAccountTypeById) //Update Bank Account Type By Id
+	adminGroup.DELETE("/bank-account-types/:bankAccountTypeId", r.expertController.DeleteBankAccountTypeById) //Delete Bank Account Type By Id
+	adminGroup.POST("/expertises", r.expertController.CreateExpertise) //Create Expertise
+	adminGroup.GET("/expertises", r.expertController.GetAllExpertise) //Get All Expertise
+	adminGroup.GET("/expertise/:expertiseId", r.expertController.GetExpertiseById) //Get Expertise By Id
+	adminGroup.PUT("/expertise/:expertiseId", r.expertController.UpdateExpertiseById) //Update Expertise By Id
+	adminGroup.DELETE("/expertise/:expertiseId", r.expertController.DeleteExpertiseById) //Delete Expertise By Id
 }
