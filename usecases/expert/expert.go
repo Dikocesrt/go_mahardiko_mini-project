@@ -216,8 +216,12 @@ func (expertUseCase *ExpertUseCase) UpdateBankAccountTypeById(bankType expertEnt
 	if bankType.Name == "" {
 		return expertEntities.BankAccountType{}, constants.ErrEmptyInputBankAccountType
 	}
-	bankType, err := expertUseCase.repository.UpdateBankAccountTypeById(bankType)
+	bankType, kode, err := expertUseCase.repository.UpdateBankAccountTypeById(bankType)
 	if err != nil {
+		return expertEntities.BankAccountType{}, constants.ErrUpdateData
+	}
+
+	if kode == 1 {
 		return expertEntities.BankAccountType{}, constants.ErrBankAccountTypeNotFound
 	}
 	return bankType, nil

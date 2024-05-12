@@ -59,7 +59,7 @@ type RepositoryInterface interface {
 	CreateBankAccountType(bankType BankAccountType) (BankAccountType, error)
 	GetBankAccountTypeById(bankType BankAccountType) (BankAccountType, error)
 	GetAllBankAccountType() ([]BankAccountType, error)
-	UpdateBankAccountTypeById(bankType BankAccountType) (BankAccountType, error)
+	UpdateBankAccountTypeById(bankType BankAccountType) (BankAccountType, int64, error)
 	DeleteBankAccountTypeById(bankType BankAccountType) (error)
 }
 

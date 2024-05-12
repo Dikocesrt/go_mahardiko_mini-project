@@ -88,6 +88,9 @@ func ConvertResponseCode(err error) int {
 		case constants.ErrCloudinary:
 			return http.StatusInternalServerError
 
+		case constants.ErrUpdateData:
+			return http.StatusInternalServerError
+
 		default:
 			return http.StatusInternalServerError
 	}

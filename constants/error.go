@@ -28,6 +28,8 @@ var ErrEmptyInputActivityType error = errors.New("name or description cannot be 
 
 var ErrGetAllData error = errors.New("failed get data from database")
 
+var ErrUpdateData error = errors.New("failed update data in database")
+
 var ErrActivityTypeNotFound error = errors.New("activity type not found")
 
 var ErrEmptyInputExpert error = errors.New("fullname, username, email, password, gender, age, fee, bank account type id, bank account name, bank account number or expertise id cannot be empty")

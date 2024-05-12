@@ -50,20 +50,21 @@ func (r *RouteController) InitRoute(e *echo.Echo) {
 	userGroup := e.Group("/users")
 	userGroup.Use(middleware.JWT([]byte(constants.SECRET_JWT)))
 	userGroup.Use(myMiddleware.UserOnlyMiddleware)
+
+	userGroup.GET("/:id", r.userController.GetUserById) //Get User By Id
+	userGroup.PUT("/:id", r.userController.UpdateProfileById) //Update Profile By Id
+
 	userGroup.POST("/activities", r.activityController.CreateActivity) //Create Activity
 	userGroup.GET("/activities/:id", r.activityController.GetActivityById) //Get Activity By Id
 	userGroup.PUT("/activities/:id", r.activityController.UpdateActivityById) //Update Activity By Id
 	userGroup.DELETE("/activities/:id", r.activityController.DeleteActivityById) //Delete Activity By Id
 	userGroup.GET("/activities/user/:userId", r.activityController.GetActivityByUserId) //Get Activity By User Id
-	userGroup.GET("/:id", r.userController.GetUserById) //Get User By Id
-	userGroup.PUT("/:id", r.userController.UpdateProfileById) //Update Profile By Id
+
 	userGroup.GET("/experts", r.expertController.GetAllExperts) //Get All Experts
-	userGroup.GET("/expert/:id", r.expertController.GetExpertById) //Get Expert By Expert Id
+	userGroup.GET("/experts/:id", r.expertController.GetExpertById) //Get Expert By Expert Id
 	userGroup.POST("/hires", r.hireController.CreateHire) //Create Hire
 	userGroup.GET("/hires/user/:userId", r.hireController.GetHiresByUserId) //Get Hires By User Id
-	userGroup.GET("/hire/:hireId", r.hireController.GetHireById) //Get Hire By Id
-
-
+	userGroup.GET("/hires/:hireId", r.hireController.GetHireById) //Get Hire By Id
 
 	expertGroup := e.Group("/experts")
 	expertGroup.Use(middleware.JWT([]byte(constants.SECRET_JWT)))
@@ -75,8 +76,6 @@ func (r *RouteController) InitRoute(e *echo.Echo) {
 	expertGroup.GET("/hires/expert/:expertId", r.hireController.GetHiresByExpertId) //Get Hires By Expert Id
 	expertGroup.GET("/hire/:hireId", r.hireController.GetHireById) //Get Hire By Id
 	expertGroup.PUT("/hires/verify/:hireId", r.hireController.VerifyPayment) //Verify Payment
-
-
 
 	adminGroup := e.Group("/admin")
 	adminGroup.Use(middleware.JWT([]byte(constants.SECRET_JWT)))

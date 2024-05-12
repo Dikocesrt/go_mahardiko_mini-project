@@ -304,15 +304,26 @@ func (expertRepo *ExpertRepo) GetAllBankAccountType() ([]expertEntities.BankAcco
 	return bankTypes, nil
 }
 
-func (expertRepo *ExpertRepo) UpdateBankAccountTypeById(bankType expertEntities.BankAccountType) (expertEntities.BankAccountType, error) {
+func (expertRepo *ExpertRepo) UpdateBankAccountTypeById(bankType expertEntities.BankAccountType) (expertEntities.BankAccountType, int64, error) {
 	var bankTypeDb BankAccountType
 	bankTypeDb.Id = bankType.Id
 	bankTypeDb.Name = bankType.Name
-	err := expertRepo.DB.Save(&bankTypeDb).Error
+
+	var counter int64
+	err := expertRepo.DB.Model(&bankTypeDb).Where("Id = ?", bankType.Id).Count(&counter).Error
 	if err != nil {
-		return expertEntities.BankAccountType{}, err
+		return expertEntities.BankAccountType{}, 0, err
 	}
-	return bankType, nil
+
+	if counter == 0 {
+		return expertEntities.BankAccountType{}, 1, nil
+	}
+
+	err = expertRepo.DB.Save(&bankTypeDb).Error
+	if err != nil {
+		return expertEntities.BankAccountType{}, 0, err
+	}
+	return bankType, 0, nil
 }
 
 func (expertRepo *ExpertRepo) DeleteBankAccountTypeById(bankType expertEntities.BankAccountType) error {
