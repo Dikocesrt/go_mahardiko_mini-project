@@ -81,6 +81,24 @@ func (hireUseCase *HireUseCase) GetHiresByExpertId(id int) ([]hireEntities.Hire,
 	return hiresFromDb, nil
 }
 
+func (hireUseCase *HireUseCase) GetHiresByUserId(id int) ([]hireEntities.Hire, error) {
+	hiresFromDb, err := hireUseCase.repository.GetHiresByUserId(id)
+	if err != nil {
+		return []hireEntities.Hire{}, constants.ErrGetDatabase
+	}
+
+	return hiresFromDb, nil
+}
+
+func (hireUseCase *HireUseCase) GetHireById(id int) (hireEntities.Hire, error) {
+	hireFromDb, err := hireUseCase.repository.GetHireById(id)
+	if err != nil {
+		return hireEntities.Hire{}, constants.ErrGetDatabase
+	}
+
+	return hireFromDb, nil
+}
+
 func (hireUseCase *HireUseCase) VerifyPayment(hire *hireEntities.Hire) (hireEntities.Hire, error) {
 	hire.HireStart = time.Now()
 	hire.HireEnd = time.Now().AddDate(0, 0, 30)

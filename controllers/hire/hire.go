@@ -103,6 +103,81 @@ func (hireController *HireController) GetHiresByExpertId(c echo.Context) error {
 	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get Hires", hiresResponse))
 }
 
+func (hireController *HireController) GetHiresByUserId(c echo.Context) error {
+	userId := c.Param("userId")
+	id, _ := strconv.Atoi(userId)
+
+	hiresEnt, err := hireController.hireUseCase.GetHiresByUserId(id)
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	hireResponses := make([]response.HireDetailResponse, len(hiresEnt))
+
+	for i, hireEnt := range hiresEnt {
+		hireResponses[i] = response.HireDetailResponse{
+			Id:            hireEnt.Id,
+			HireStart:     hireEnt.HireStart,
+			HireEnd:       hireEnt.HireEnd,
+			TotalFee:      hireEnt.TotalFee,
+			PaymentStatus: hireEnt.PaymentStatus,
+			PaymentImage:  hireEnt.PaymentImage,
+			MeetTime:      hireEnt.MeetTime,
+			MeetDay:       hireEnt.MeetDay,
+			MeetUrl:       hireEnt.MeetUrl,
+			User: response.UserDetailResponse{
+				Id:       hireEnt.User.Id,
+				Username: hireEnt.User.Username,
+				Email:    hireEnt.User.Email,
+				FullName: hireEnt.User.FullName,
+			},
+			Expert: response.ExpertDetailResponse{
+				Id:             hireEnt.Expert.Id,
+				Username:       hireEnt.Expert.Username,
+				Email:          hireEnt.Expert.Email,
+				FullName:       hireEnt.Expert.FullName,
+			},
+		}
+	}
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get Hires", hireResponses))
+}
+
+func (hireController *HireController) GetHireById(c echo.Context) error {
+	hireId := c.Param("hireId")
+	id, _ := strconv.Atoi(hireId)
+
+	hireEnt, err := hireController.hireUseCase.GetHireById(id)
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	hireResponse := response.HireDetailResponse{
+		Id:            hireEnt.Id,
+		HireStart:     hireEnt.HireStart,
+		HireEnd:       hireEnt.HireEnd,
+		TotalFee:      hireEnt.TotalFee,
+		PaymentStatus: hireEnt.PaymentStatus,
+		PaymentImage:  hireEnt.PaymentImage,
+		MeetTime:      hireEnt.MeetTime,
+		MeetDay:       hireEnt.MeetDay,
+		MeetUrl:       hireEnt.MeetUrl,
+		User: response.UserDetailResponse{
+			Id:       hireEnt.User.Id,
+			Username: hireEnt.User.Username,
+			Email:    hireEnt.User.Email,
+			FullName: hireEnt.User.FullName,
+		},
+		Expert: response.ExpertDetailResponse{
+			Id:             hireEnt.Expert.Id,
+			Username:       hireEnt.Expert.Username,
+			Email:          hireEnt.Expert.Email,
+			FullName:       hireEnt.Expert.FullName,
+		},
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get Hire", hireResponse))
+}
+
 func (hireController *HireController) VerifyPayment(c echo.Context) error {
 	hireId := c.Param("hireId")
 	id, _ := strconv.Atoi(hireId)

@@ -60,6 +60,8 @@ func (r *RouteController) InitRoute(e *echo.Echo) {
 	userGroup.GET("/experts", r.expertController.GetAllExperts) //Get All Experts
 	userGroup.GET("/expert/:id", r.expertController.GetExpertById) //Get Expert By Expert Id
 	userGroup.POST("/hires", r.hireController.CreateHire) //Create Hire
+	userGroup.GET("/hires/user/:userId", r.hireController.GetHiresByUserId) //Get Hires By User Id
+	userGroup.GET("/hire/:hireId", r.hireController.GetHireById) //Get Hire By Id
 
 
 
@@ -71,6 +73,7 @@ func (r *RouteController) InitRoute(e *echo.Echo) {
 	expertGroup.GET("/user/:id", r.userController.GetUserById) //Get User By User Id
 	expertGroup.GET("/activities/user/:userId", r.activityController.GetActivityByUserId) //Get Activity By User Id
 	expertGroup.GET("/hires/expert/:expertId", r.hireController.GetHiresByExpertId) //Get Hires By Expert Id
+	expertGroup.GET("/hire/:hireId", r.hireController.GetHireById) //Get Hire By Id
 	expertGroup.PUT("/hires/verify/:hireId", r.hireController.VerifyPayment) //Verify Payment
 
 
