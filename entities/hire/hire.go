@@ -26,11 +26,15 @@ type Hire struct {
 type RepositoryInterface interface {
 	CreateHire(hire *Hire) (Hire, error)
 	GetHiresByExpertId(id int) ([]Hire, error)
+	GetHiresByUserId(id int) ([]Hire, error)
+	GetHireById(id int) (Hire, error)
 	VerifyPayment(hire *Hire) (Hire, error)
 }
 
 type UseCaseInterface interface {
 	CreateHire(hire *Hire, file *multipart.FileHeader) (Hire, error)
 	GetHiresByExpertId(id int) ([]Hire, error)
+	GetHiresByUserId(id int) ([]Hire, error)
+	GetHireById(id int) (Hire, error)
 	VerifyPayment(hire *Hire) (Hire, error)
 }

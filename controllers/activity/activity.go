@@ -201,3 +201,104 @@ func (activityController *ActivityController) DeleteActivityById(c echo.Context)
 
 	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Delete Activity", nil))
 }
+
+func (activityController *ActivityController) CreateActivityType(c echo.Context) error {
+	var activityTypeReq request.ActivityTypeRequest
+
+	c.Bind(&activityTypeReq)
+
+	activityTypeEnt := activityEntities.ActivityType{
+		Name:        activityTypeReq.Name,
+		Description: activityTypeReq.Description,
+	}
+
+	activityTypeEnt, err := activityController.activityUseCase.CreateActivityType(activityTypeEnt)
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	activityTypeResponse := response.ActivityTypeResponse{
+		Id:          activityTypeEnt.Id,
+		Name:        activityTypeEnt.Name,
+		Description: activityTypeEnt.Description,
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Create Activity Type", activityTypeResponse))
+}
+
+func (activityController *ActivityController) GetAllActivityType(c echo.Context) error {
+	activityTypeEnts, err := activityController.activityUseCase.GetAllActivityType()
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	activityTypeResponses := make([]response.ActivityTypeResponse, len(activityTypeEnts))
+
+	for i := 0; i < len(activityTypeEnts); i++ {
+		activityTypeResponses[i] = response.ActivityTypeResponse{
+			Id:          activityTypeEnts[i].Id,
+			Name:        activityTypeEnts[i].Name,
+			Description: activityTypeEnts[i].Description,
+		}
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get All Activity Type", activityTypeResponses))
+}
+
+func (activityController *ActivityController) GetActivityTypeById(c echo.Context) error {
+	activityId := c.Param("activityTypeId")
+	id, _ := strconv.Atoi(activityId)
+
+	var activityTypeEnt activityEntities.ActivityType
+	activityTypeEnt.Id = id
+
+	activityTypeEnt, err := activityController.activityUseCase.GetActivityTypeById(activityTypeEnt)
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+	
+	activityTypeResponse := response.ActivityTypeResponse{
+		Id:          activityTypeEnt.Id,
+		Name:        activityTypeEnt.Name,
+		Description: activityTypeEnt.Description,
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get Activity Type By Id", activityTypeResponse))
+}
+
+func (activityController *ActivityController) UpdateActivityTypeById(c echo.Context) error {
+	activityId := c.Param("activityTypeId")
+	id, _ := strconv.Atoi(activityId)
+
+	var activityTypeEnt activityEntities.ActivityType
+	c.Bind(&activityTypeEnt)
+	activityTypeEnt.Id = id
+
+	activityTypeEnt, err := activityController.activityUseCase.UpdateActivityTypeById(activityTypeEnt)
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	activityTypeResponse := response.ActivityTypeResponse{
+		Id:          activityTypeEnt.Id,
+		Name:        activityTypeEnt.Name,
+		Description: activityTypeEnt.Description,
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Update Activity Type", activityTypeResponse))
+}
+
+func (activityController *ActivityController) DeleteActivityTypeById(c echo.Context) error {
+	activityId := c.Param("activityTypeId")
+	id, _ := strconv.Atoi(activityId)
+
+	var activityTypeEnt activityEntities.ActivityType
+	activityTypeEnt.Id = id
+
+	err := activityController.activityUseCase.DeleteActivityTypeById(activityTypeEnt)
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Delete Activity Type", nil))
+}

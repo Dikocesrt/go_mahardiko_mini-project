@@ -3,7 +3,6 @@ package admin
 import (
 	"habit/constants"
 	adminEntities "habit/entities/admin"
-	"habit/entities/expert"
 	"habit/middlewares"
 
 	"golang.org/x/crypto/bcrypt"
@@ -45,45 +44,4 @@ func (adminUseCase *AdminUseCase) Login(admin *adminEntities.Admin) (adminEntiti
 	loginAdmin.Token = token
 
 	return loginAdmin, nil
-}
-
-
-func (adminUseCase *AdminUseCase) CreateBankAccountType(bankType expert.BankAccountType) (expert.BankAccountType, error) {
-	bankType, err := adminUseCase.repository.CreateBankAccountType(bankType)
-	if err != nil {
-		return expert.BankAccountType{}, err
-	}
-	return bankType, nil
-}
-
-func (adminUseCase *AdminUseCase) GetBankAccountTypeById(bankType expert.BankAccountType) (expert.BankAccountType, error) {
-	bankType, err := adminUseCase.repository.GetBankAccountTypeById(bankType)
-	if err != nil {
-		return expert.BankAccountType{}, err
-	}
-	return bankType, nil
-}
-
-func (adminUseCase *AdminUseCase) GetAllBankAccountType() ([]expert.BankAccountType, error) {
-	bankTypes, err := adminUseCase.repository.GetAllBankAccountType()
-	if err != nil {
-		return []expert.BankAccountType{}, err
-	}
-	return bankTypes, nil
-}
-
-func (adminUseCase *AdminUseCase) UpdateBankAccountTypeById(bankType expert.BankAccountType) (expert.BankAccountType, error) {
-	bankType, err := adminUseCase.repository.UpdateBankAccountTypeById(bankType)
-	if err != nil {
-		return expert.BankAccountType{}, err
-	}
-	return bankType, nil
-}
-
-func (adminUseCase *AdminUseCase) DeleteBankAccountTypeById(bankType expert.BankAccountType) error {
-	err := adminUseCase.repository.DeleteBankAccountTypeById(bankType)
-	if err != nil {
-		return err
-	}
-	return nil
 }

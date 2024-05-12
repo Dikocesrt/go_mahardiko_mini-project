@@ -34,6 +34,11 @@ type RepositoryInterface interface {
 	GetActivityById(activity Activity) (Activity, error)
 	UpdateActivityById(activity Activity) (Activity, error)
 	DeleteActivityById(activity Activity) error
+	CreateActivityType(activityType ActivityType) (ActivityType, error)
+	GetAllActivityType() ([]ActivityType, error)
+	GetActivityTypeById(activityType ActivityType) (ActivityType, error)
+	UpdateActivityTypeById(activityType ActivityType) (ActivityType, error)
+	DeleteActivityTypeById(activityType ActivityType) error
 }
 
 type UseCaseInterface interface {
@@ -42,4 +47,9 @@ type UseCaseInterface interface {
 	GetActivityById(activity Activity) (Activity, error)
 	UpdateActivityById(activity Activity) (Activity, error)
 	DeleteActivityById(activity Activity) error
+	CreateActivityType(activityType ActivityType) (ActivityType, error)
+	GetAllActivityType() ([]ActivityType, error)
+	GetActivityTypeById(activityType ActivityType) (ActivityType, error)
+	UpdateActivityTypeById(activityType ActivityType) (ActivityType, error)
+	DeleteActivityTypeById(activityType ActivityType) error
 }

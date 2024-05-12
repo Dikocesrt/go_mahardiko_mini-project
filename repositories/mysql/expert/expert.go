@@ -203,3 +203,124 @@ func (expertRepo *ExpertRepo) GetExpertById(expert *expertEntities.Expert) (expe
 	expertFromDb.BankAccount = *bankAccountDb.FromBankAccountDbToBankAccountEntities()
 	return *expertFromDb, nil
 }
+
+func (expertRepo *ExpertRepo) CreateExpertise(expertise expertEntities.Expertise) (expertEntities.Expertise, error) {
+	var expertiseDb Expertise
+	expertiseDb.Name = expertise.Name
+	expertiseDb.Description = expertise.Description
+	err := expertRepo.DB.Create(&expertiseDb).Error
+	if err != nil {
+		return expertEntities.Expertise{}, err
+	}
+	expertise.Id = expertiseDb.Id
+	return expertise, nil
+}
+
+func (expertRepo *ExpertRepo) GetAllExpertise() ([]expertEntities.Expertise, error) {
+	var expertiseDb []Expertise
+	err := expertRepo.DB.Find(&expertiseDb).Error
+	if err != nil {
+		return []expertEntities.Expertise{}, err
+	}
+	expertise := make([]expertEntities.Expertise, len(expertiseDb))
+	for i := 0; i < len(expertiseDb); i++ {
+		expertise[i].Id = expertiseDb[i].Id
+		expertise[i].Name = expertiseDb[i].Name
+		expertise[i].Description = expertiseDb[i].Description
+	}
+	return expertise, nil
+}
+
+func (expertRepo *ExpertRepo) GetExpertiseById(expertise expertEntities.Expertise) (expertEntities.Expertise, error) {
+	var expertiseDb Expertise
+	expertiseDb.Id = expertise.Id
+	err := expertRepo.DB.First(&expertiseDb).Error
+	if err != nil {
+		return expertEntities.Expertise{}, err
+	}
+	expertise.Name = expertiseDb.Name
+	expertise.Description = expertiseDb.Description
+	return expertise, nil
+}
+
+func (expertRepo *ExpertRepo) UpdateExpertiseById(expertise expertEntities.Expertise) (expertEntities.Expertise, error) {
+	var expertiseDb Expertise
+	expertiseDb.Id = expertise.Id
+	expertiseDb.Name = expertise.Name
+	expertiseDb.Description = expertise.Description
+	err := expertRepo.DB.Save(&expertiseDb).Error
+	if err != nil {
+		return expertEntities.Expertise{}, err
+	}
+	return expertise, nil
+}
+
+func (expertRepo *ExpertRepo) DeleteExpertiseById(expertise expertEntities.Expertise) error {
+	var expertiseDb Expertise
+	expertiseDb.Id = expertise.Id
+	err := expertRepo.DB.Delete(&expertiseDb).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (expertRepo *ExpertRepo) CreateBankAccountType(bankType expertEntities.BankAccountType) (expertEntities.BankAccountType, error) {
+	var bankTypeDb BankAccountType
+	bankTypeDb.Name = bankType.Name
+	err := expertRepo.DB.Create(&bankTypeDb).Error
+	if err != nil {
+		return expertEntities.BankAccountType{}, err
+	}
+	bankType.Id = bankTypeDb.Id
+	return bankType, nil
+}
+
+func (expertRepo *ExpertRepo) GetBankAccountTypeById(bankType expertEntities.BankAccountType) (expertEntities.BankAccountType, error) {
+	var bankTypeDb BankAccountType
+	bankTypeDb.Id = bankType.Id
+	err := expertRepo.DB.First(&bankTypeDb).Error
+	if err != nil {
+		return expertEntities.BankAccountType{}, err
+	}
+	bankType.Name = bankTypeDb.Name
+	return bankType, nil
+}
+
+func (expertRepo *ExpertRepo) GetAllBankAccountType() ([]expertEntities.BankAccountType, error) {
+	var bankTypesDb []BankAccountType
+	err := expertRepo.DB.Find(&bankTypesDb).Error
+	if err != nil {
+		return []expertEntities.BankAccountType{}, err
+	}
+
+	bankTypes := make([]expertEntities.BankAccountType, len(bankTypesDb))
+
+	for i := 0; i < len(bankTypesDb); i++ {
+		bankTypes[i].Id = bankTypesDb[i].Id
+		bankTypes[i].Name = bankTypesDb[i].Name
+	}
+
+	return bankTypes, nil
+}
+
+func (expertRepo *ExpertRepo) UpdateBankAccountTypeById(bankType expertEntities.BankAccountType) (expertEntities.BankAccountType, error) {
+	var bankTypeDb BankAccountType
+	bankTypeDb.Id = bankType.Id
+	bankTypeDb.Name = bankType.Name
+	err := expertRepo.DB.Save(&bankTypeDb).Error
+	if err != nil {
+		return expertEntities.BankAccountType{}, err
+	}
+	return bankType, nil
+}
+
+func (expertRepo *ExpertRepo) DeleteBankAccountTypeById(bankType expertEntities.BankAccountType) error {
+	var bankTypeDb BankAccountType
+	bankTypeDb.Id = bankType.Id
+	err := expertRepo.DB.Delete(&bankTypeDb).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}

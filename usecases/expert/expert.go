@@ -138,3 +138,83 @@ func (expertUseCase *ExpertUseCase) GetExpertById(expert *expertEntities.Expert)
 
 	return expertDb, nil
 }
+
+func (expertUseCase *ExpertUseCase) CreateExpertise(expertise expertEntities.Expertise) (expertEntities.Expertise, error) {
+	newExpertise, err := expertUseCase.repository.CreateExpertise(expertise)
+	if err != nil {
+		return expertEntities.Expertise{}, err
+	}
+	return newExpertise, nil
+}
+
+func (expertUseCase *ExpertUseCase) GetAllExpertise() ([]expertEntities.Expertise, error) {
+	newExpertise, err := expertUseCase.repository.GetAllExpertise()
+	if err != nil {
+		return []expertEntities.Expertise{}, err
+	}
+	return newExpertise, nil
+}
+
+func (expertUseCase *ExpertUseCase) GetExpertiseById(expertise expertEntities.Expertise) (expertEntities.Expertise, error) {
+	newExpertise, err := expertUseCase.repository.GetExpertiseById(expertise)
+	if err != nil {
+		return expertEntities.Expertise{}, err
+	}
+	return newExpertise, nil
+}
+
+func (expertUseCase *ExpertUseCase) UpdateExpertiseById(expertise expertEntities.Expertise) (expertEntities.Expertise, error) {
+	newExpertise, err := expertUseCase.repository.UpdateExpertiseById(expertise)
+	if err != nil {
+		return expertEntities.Expertise{}, err
+	}
+	return newExpertise, nil
+}
+
+func (expertUseCase *ExpertUseCase) DeleteExpertiseById(expertise expertEntities.Expertise) error {
+	err := expertUseCase.repository.DeleteExpertiseById(expertise)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (expertUseCase *ExpertUseCase) CreateBankAccountType(bankType expertEntities.BankAccountType) (expertEntities.BankAccountType, error) {
+	bankType, err := expertUseCase.repository.CreateBankAccountType(bankType)
+	if err != nil {
+		return expertEntities.BankAccountType{}, err
+	}
+	return bankType, nil
+}
+
+func (expertUseCase *ExpertUseCase) GetBankAccountTypeById(bankType expertEntities.BankAccountType) (expertEntities.BankAccountType, error) {
+	bankType, err := expertUseCase.repository.GetBankAccountTypeById(bankType)
+	if err != nil {
+		return expertEntities.BankAccountType{}, err
+	}
+	return bankType, nil
+}
+
+func (expertUseCase *ExpertUseCase) GetAllBankAccountType() ([]expertEntities.BankAccountType, error) {
+	bankTypes, err := expertUseCase.repository.GetAllBankAccountType()
+	if err != nil {
+		return []expertEntities.BankAccountType{}, err
+	}
+	return bankTypes, nil
+}
+
+func (expertUseCase *ExpertUseCase) UpdateBankAccountTypeById(bankType expertEntities.BankAccountType) (expertEntities.BankAccountType, error) {
+	bankType, err := expertUseCase.repository.UpdateBankAccountTypeById(bankType)
+	if err != nil {
+		return expertEntities.BankAccountType{}, err
+	}
+	return bankType, nil
+}
+
+func (expertUseCase *ExpertUseCase) DeleteBankAccountTypeById(bankType expertEntities.BankAccountType) error {
+	err := expertUseCase.repository.DeleteBankAccountTypeById(bankType)
+	if err != nil {
+		return err
+	}
+	return nil
+}

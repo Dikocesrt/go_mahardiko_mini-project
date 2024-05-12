@@ -51,6 +51,16 @@ type RepositoryInterface interface {
 	UpdateProfileExpertById(expert *Expert) (Expert, int64, error)
 	GetAllExperts() ([]Expert, error)
 	GetExpertById(expert *Expert) (Expert, error)
+	CreateExpertise(expertise Expertise) (Expertise, error)
+	GetExpertiseById(expertise Expertise) (Expertise, error)
+	GetAllExpertise() ([]Expertise, error)
+	UpdateExpertiseById(expertise Expertise) (Expertise, error)
+	DeleteExpertiseById(expertise Expertise) (error)
+	CreateBankAccountType(bankType BankAccountType) (BankAccountType, error)
+	GetBankAccountTypeById(bankType BankAccountType) (BankAccountType, error)
+	GetAllBankAccountType() ([]BankAccountType, error)
+	UpdateBankAccountTypeById(bankType BankAccountType) (BankAccountType, error)
+	DeleteBankAccountTypeById(bankType BankAccountType) (error)
 }
 
 type UseCaseInterface interface {
@@ -59,4 +69,14 @@ type UseCaseInterface interface {
 	UpdateProfileExpertById(expert *Expert, file *multipart.FileHeader) (Expert, error)
 	GetAllExperts() ([]Expert, error)
 	GetExpertById(expert *Expert) (Expert, error)
+	CreateExpertise(expertise Expertise) (Expertise, error)
+	GetExpertiseById(expertise Expertise) (Expertise, error)
+	GetAllExpertise() ([]Expertise, error)
+	UpdateExpertiseById(expertise Expertise) (Expertise, error)
+	DeleteExpertiseById(expertise Expertise) (error)
+	CreateBankAccountType(bankType BankAccountType) (BankAccountType, error)
+	GetBankAccountTypeById(bankType BankAccountType) (BankAccountType, error)
+	GetAllBankAccountType() ([]BankAccountType, error)
+	UpdateBankAccountTypeById(bankType BankAccountType) (BankAccountType, error)
+	DeleteBankAccountTypeById(bankType BankAccountType) (error)
 }

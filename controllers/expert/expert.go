@@ -219,3 +219,202 @@ func (expertController *ExpertController) GetExpertById(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get Expert By Id", expertResponse))
 }
+
+
+func (expertController *ExpertController) CreateExpertise(c echo.Context) error {
+	var expertiseRequest request.ExpertiseRequest
+	c.Bind(&expertiseRequest)
+
+	var expertise expertEntities.Expertise
+	expertise.Name = expertiseRequest.Name
+	expertise.Description = expertiseRequest.Description
+
+	expertise, err := expertController.expertUseCase.CreateExpertise(expertise)
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	expertiseResponse := response.ExpertiseAdminResponse{
+		Id:          expertise.Id,
+		Name:        expertise.Name,
+		Description: expertise.Description,
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Create Expertise", expertiseResponse))
+}
+
+func (expertController *ExpertController) GetAllExpertise(c echo.Context) error {
+	expertises, err := expertController.expertUseCase.GetAllExpertise()
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	expertiseResponse := make([]response.ExpertiseAdminResponse, len(expertises))
+
+	for i := 0; i < len(expertises); i++ {
+		expertiseResponse[i].Id = expertises[i].Id
+		expertiseResponse[i].Name = expertises[i].Name
+		expertiseResponse[i].Description = expertises[i].Description
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get All Expertise", expertiseResponse))
+}
+
+func (expertController *ExpertController) GetExpertiseById(c echo.Context) error {
+	expertiseId := c.Param("expertiseId")
+	id, _ := strconv.Atoi(expertiseId)
+
+	var expertise expertEntities.Expertise
+	expertise.Id = id
+
+	expertise, err := expertController.expertUseCase.GetExpertiseById(expertise)
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	expertiseResponse := response.ExpertiseAdminResponse{
+		Id:          expertise.Id,
+		Name:        expertise.Name,
+		Description: expertise.Description,
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get Expertise", expertiseResponse))
+}
+
+func (expertController *ExpertController) UpdateExpertiseById(c echo.Context) error {
+	var expertiseRequest request.ExpertiseRequest
+	c.Bind(&expertiseRequest)
+
+	expertiseId := c.Param("expertiseId")
+	id, _ := strconv.Atoi(expertiseId)
+
+	var expertise expertEntities.Expertise
+	expertise.Id = id
+	expertise.Name = expertiseRequest.Name
+	expertise.Description = expertiseRequest.Description
+
+	expertise, err := expertController.expertUseCase.UpdateExpertiseById(expertise)
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	expertiseResponse := response.ExpertiseAdminResponse{
+		Id:          expertise.Id,
+		Name:        expertise.Name,
+		Description: expertise.Description,
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Update Expertise", expertiseResponse))
+}
+
+func (expertController *ExpertController) DeleteExpertiseById(c echo.Context) error {
+	expertiseId := c.Param("expertiseId")
+	id, _ := strconv.Atoi(expertiseId)
+
+	var expertise expertEntities.Expertise
+	expertise.Id = id
+
+	err := expertController.expertUseCase.DeleteExpertiseById(expertise)
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Delete Expertise", nil))
+}
+
+func (expertController *ExpertController) CreateBankAccountType(c echo.Context) error {
+	var createBankRequest request.BankTypeRequest
+	c.Bind(&createBankRequest)
+
+	var bankType expertEntities.BankAccountType
+
+	bankType.Name = createBankRequest.Name
+
+	bankType, err := expertController.expertUseCase.CreateBankAccountType(bankType)
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	bankResponse := response.BankTypeResponse{
+		Id:   bankType.Id,
+		Name: bankType.Name,
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Create Bank Account Type", bankResponse))
+}
+
+func (expertController *ExpertController) GetBankAccountTypeById(c echo.Context) error {
+	bankAccountTypeId := c.Param("bankAccountTypeId")
+	id, _ := strconv.Atoi(bankAccountTypeId)
+
+	var bankType expertEntities.BankAccountType
+	bankType.Id = id
+
+	bankType, err := expertController.expertUseCase.GetBankAccountTypeById(bankType)
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	bankResponse := response.BankTypeResponse{
+		Id:   bankType.Id,
+		Name: bankType.Name,
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get Bank Account Type", bankResponse))
+}
+
+func (expertController *ExpertController) GetAllBankAccountType(c echo.Context) error {
+	bankTypes, err := expertController.expertUseCase.GetAllBankAccountType()
+
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	bankTypesResponse := make([]response.BankTypeResponse, len(bankTypes))
+
+	for i := 0; i < len(bankTypes); i++ {
+		bankTypesResponse[i].Id = bankTypes[i].Id
+		bankTypesResponse[i].Name = bankTypes[i].Name
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get All Bank Account Type", bankTypesResponse))
+}
+
+func (expertController *ExpertController) UpdateBankAccountTypeById(c echo.Context) error {
+	var createBankRequest request.BankTypeRequest
+	c.Bind(&createBankRequest)
+
+	bankAccountTypeId := c.Param("bankAccountTypeId")
+	id, _ := strconv.Atoi(bankAccountTypeId)
+
+	var bankType expertEntities.BankAccountType
+	bankType.Id = id
+	bankType.Name = createBankRequest.Name
+
+	bankType, err := expertController.expertUseCase.UpdateBankAccountTypeById(bankType)
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	bankResponse := response.BankTypeResponse{
+		Id:   bankType.Id,
+		Name: bankType.Name,
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Update Bank Account Type", bankResponse))
+}
+
+func (expertController *ExpertController) DeleteBankAccountTypeById(c echo.Context) error {
+	bankAccountTypeId := c.Param("bankAccountTypeId")
+	id, _ := strconv.Atoi(bankAccountTypeId)
+
+	var bankType expertEntities.BankAccountType
+	bankType.Id = id
+
+	err := expertController.expertUseCase.DeleteBankAccountTypeById(bankType)
+	if err != nil {
+		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
+	}
+
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Delete Bank Account Type", nil))
+}
