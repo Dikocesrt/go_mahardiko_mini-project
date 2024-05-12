@@ -66,7 +66,7 @@ func (activityController *ActivityController) CreateActivity(c echo.Context) err
 		},
 	}
 
-	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Create Activity", activityResponse))
+	return c.JSON(http.StatusCreated, base.NewSuccessResponse("Success Create Activity", activityResponse))
 }
 
 func (activityController *ActivityController) GetActivityByUserId(c echo.Context) error {
@@ -100,7 +100,7 @@ func (activityController *ActivityController) GetActivityByUserId(c echo.Context
 	if err != nil {
 		return c.JSON(base.ConvertResponseCode(err), base.NewErrorResponse(err.Error()))
 	}
-	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get Activity", activityResponse))
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get Activities", activityResponse))
 }
 
 func (activityController *ActivityController) GetActivityById(c echo.Context) error {
@@ -223,7 +223,7 @@ func (activityController *ActivityController) CreateActivityType(c echo.Context)
 		Description: activityTypeEnt.Description,
 	}
 
-	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Create Activity Type", activityTypeResponse))
+	return c.JSON(http.StatusCreated, base.NewSuccessResponse("Success Create Activity Type", activityTypeResponse))
 }
 
 func (activityController *ActivityController) GetAllActivityType(c echo.Context) error {
@@ -242,7 +242,7 @@ func (activityController *ActivityController) GetAllActivityType(c echo.Context)
 		}
 	}
 
-	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get All Activity Type", activityTypeResponses))
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get All Activity Types", activityTypeResponses))
 }
 
 func (activityController *ActivityController) GetActivityTypeById(c echo.Context) error {
@@ -263,7 +263,7 @@ func (activityController *ActivityController) GetActivityTypeById(c echo.Context
 		Description: activityTypeEnt.Description,
 	}
 
-	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get Activity Type By Id", activityTypeResponse))
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get Activity Type", activityTypeResponse))
 }
 
 func (activityController *ActivityController) UpdateActivityTypeById(c echo.Context) error {

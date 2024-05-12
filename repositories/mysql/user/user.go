@@ -17,18 +17,36 @@ func NewUserRepo(db *gorm.DB) *UserRepo {
 	}
 }
 
-func (userRepo *UserRepo) Register(user *userEntities.User) (userEntities.User, error) {
+func (userRepo *UserRepo) Register(user *userEntities.User) (userEntities.User, int64, error) {
 	userDb := FromUserEntitiesToUserDb(user)
 
-	err := userRepo.DB.Create(&userDb).Error
-
+	var counterUsername, counterEmail int64
+	err := userRepo.DB.Model(&userDb).Where("username = ?", userDb.Username).Count(&counterUsername).Error
 	if err != nil {
-		return userEntities.User{}, err
+		return userEntities.User{}, 0, err
+	}
+
+	if counterUsername > 0 {
+		return userEntities.User{}, 1, nil
+	}
+
+	err = userRepo.DB.Model(&userDb).Where("email = ?", userDb.Email).Count(&counterEmail).Error
+	if err != nil {
+		return userEntities.User{}, 0, err
+	}
+
+	if counterEmail > 0 {
+		return userEntities.User{}, 2, nil
+	}
+
+	err = userRepo.DB.Create(&userDb).Error
+	if err != nil {
+		return userEntities.User{}, 0, err
 	}
 
 	newUser := userDb.FromUserDbToUserEntities()
 
-	return *newUser, nil
+	return *newUser, 0, nil
 }
 
 func (userRepo *UserRepo) Login(user *userEntities.User) (userEntities.User, error) {

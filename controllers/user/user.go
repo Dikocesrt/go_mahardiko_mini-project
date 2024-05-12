@@ -43,7 +43,7 @@ func (userController *UserController) Register(c echo.Context) error {
 		Username:  newUser.Username,
 		Email: newUser.Email,
 	}
-	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Register", userResponse))
+	return c.JSON(http.StatusCreated, base.NewSuccessResponse("Success Register", userResponse))
 }
 
 func (userController *UserController) Login(c echo.Context) error {

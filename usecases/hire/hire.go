@@ -49,8 +49,8 @@ func uploadImage(file *multipart.FileHeader) (string, error) {
 }
 
 func (hireUseCase *HireUseCase) CreateHire(hire *hireEntities.Hire, file *multipart.FileHeader) (hireEntities.Hire, error) {
-	if file == nil {
-		return hireEntities.Hire{}, constants.ErrEmptyImageInput
+	if hire.UserId == 0 || hire.ExpertId == 0 || hire.MeetDay == "" || hire.MeetTime == "" || hire.TotalFee == 0 || file == nil {
+		return hireEntities.Hire{}, constants.ErrEmptyInputHire
 	}
 
 	if file != nil {
@@ -75,7 +75,7 @@ func (hireUseCase *HireUseCase) CreateHire(hire *hireEntities.Hire, file *multip
 func (hireUseCase *HireUseCase) GetHiresByExpertId(id int) ([]hireEntities.Hire, error) {
 	hiresFromDb, err := hireUseCase.repository.GetHiresByExpertId(id)
 	if err != nil {
-		return []hireEntities.Hire{}, constants.ErrGetDatabase
+		return []hireEntities.Hire{}, constants.ErrGetHiresByExpertId
 	}
 
 	return hiresFromDb, nil
@@ -84,7 +84,7 @@ func (hireUseCase *HireUseCase) GetHiresByExpertId(id int) ([]hireEntities.Hire,
 func (hireUseCase *HireUseCase) GetHiresByUserId(id int) ([]hireEntities.Hire, error) {
 	hiresFromDb, err := hireUseCase.repository.GetHiresByUserId(id)
 	if err != nil {
-		return []hireEntities.Hire{}, constants.ErrGetDatabase
+		return []hireEntities.Hire{}, constants.ErrGetHiresByUserId
 	}
 
 	return hiresFromDb, nil
@@ -93,19 +93,22 @@ func (hireUseCase *HireUseCase) GetHiresByUserId(id int) ([]hireEntities.Hire, e
 func (hireUseCase *HireUseCase) GetHireById(id int) (hireEntities.Hire, error) {
 	hireFromDb, err := hireUseCase.repository.GetHireById(id)
 	if err != nil {
-		return hireEntities.Hire{}, constants.ErrGetDatabase
+		return hireEntities.Hire{}, constants.ErrHireNotFound
 	}
 
 	return hireFromDb, nil
 }
 
 func (hireUseCase *HireUseCase) VerifyPayment(hire *hireEntities.Hire) (hireEntities.Hire, error) {
+	if hire.PaymentStatus == "" || hire.MeetUrl == "" {
+		return hireEntities.Hire{}, constants.ErrEmptyInputVerifyPayment
+	}
 	hire.HireStart = time.Now()
 	hire.HireEnd = time.Now().AddDate(0, 0, 30)
 	hire.PaymentStatus = "paid"
 	hireFromDb, err := hireUseCase.repository.VerifyPayment(hire)
 	if err != nil {
-		return hireEntities.Hire{}, constants.ErrGetDatabase
+		return hireEntities.Hire{}, constants.ErrHireNotFound
 	}
 
 	return hireFromDb, nil

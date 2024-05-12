@@ -61,7 +61,7 @@ func (hireController *HireController) CreateHire(c echo.Context) error {
 		},
 	}
 
-	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Create Hire", hireResponse))
+	return c.JSON(http.StatusCreated, base.NewSuccessResponse("Success Create Hire", hireResponse))
 }
 
 func (hireController *HireController) GetHiresByExpertId(c echo.Context) error {

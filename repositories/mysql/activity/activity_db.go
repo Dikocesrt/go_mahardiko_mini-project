@@ -9,8 +9,8 @@ type Activity struct {
 	gorm.Model
 	Id               int `gorm:"primaryKey;autoIncrement"`
 	Title            string
-	ActivityStart    string
-	ActivityFinish   string
+	ActivityStart    string `gorm:"type:time"`
+	ActivityFinish   string `gorm:"type:time"`
 	ActivityTypeId   int `gorm:"index"`
 	ActivityDetailId int `gorm:"index"`
 	UserId           int `gorm:"index"`

@@ -40,7 +40,7 @@ func (adminController *AdminController) Register(c echo.Context) error {
 		Email:    adminEnt.Email,
 	}
 
-	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Register", adminRes))
+	return c.JSON(http.StatusCreated, base.NewSuccessResponse("Success Register", adminRes))
 }
 
 func (adminController *AdminController) Login(c echo.Context) error {
