@@ -54,13 +54,13 @@ type RepositoryInterface interface {
 	CreateExpertise(expertise Expertise) (Expertise, error)
 	GetExpertiseById(expertise Expertise) (Expertise, error)
 	GetAllExpertise() ([]Expertise, error)
-	UpdateExpertiseById(expertise Expertise) (Expertise, error)
-	DeleteExpertiseById(expertise Expertise) (error)
+	UpdateExpertiseById(expertise Expertise) (Expertise, int64, error)
+	DeleteExpertiseById(expertise Expertise) (int64, error)
 	CreateBankAccountType(bankType BankAccountType) (BankAccountType, error)
 	GetBankAccountTypeById(bankType BankAccountType) (BankAccountType, error)
 	GetAllBankAccountType() ([]BankAccountType, error)
-	UpdateBankAccountTypeById(bankType BankAccountType) (BankAccountType, error)
-	DeleteBankAccountTypeById(bankType BankAccountType) (error)
+	UpdateBankAccountTypeById(bankType BankAccountType) (BankAccountType, int64, error)
+	DeleteBankAccountTypeById(bankType BankAccountType) (int64, error)
 }
 
 type UseCaseInterface interface {

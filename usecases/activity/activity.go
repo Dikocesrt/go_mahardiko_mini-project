@@ -48,7 +48,7 @@ func uploadImage(file *multipart.FileHeader) (string, error) {
 
 func (activityUseCase *ActivityUseCase) CreateActivity(activity activityEntities.Activity, file *multipart.FileHeader) (activityEntities.Activity, error) {
 	if activity.Title == "" || activity.ActivityStart == "" || activity.ActivityFinish == "" {
-		return activityEntities.Activity{}, constants.ErrEmptyInputCreateActivity
+		return activityEntities.Activity{}, constants.ErrEmptyInputActivity
 	}
 
 	if file != nil {
@@ -62,16 +62,20 @@ func (activityUseCase *ActivityUseCase) CreateActivity(activity activityEntities
 
 	activity, err := activityUseCase.repository.CreateActivity(activity)
 	if err != nil {
-		return activityEntities.Activity{}, err
+		return activityEntities.Activity{}, constants.ErrInsertDatabase
 	}
 
 	return activity, nil
 }
 
 func (activityUseCase *ActivityUseCase) GetActivityByUserId(userId int) ([]activityEntities.Activity, error) {
-	activities, err := activityUseCase.repository.GetActivityByUserId(userId)
+	activities, kode, err := activityUseCase.repository.GetActivityByUserId(userId)
 	if err != nil {
-		return []activityEntities.Activity{}, constants.ErrGetDatabase
+		return []activityEntities.Activity{}, constants.ErrGetAllData
+	}
+
+	if kode == 1 {
+		return []activityEntities.Activity{}, constants.ErrGetActivitiesByUserId
 	}
 	return activities, nil
 }
@@ -79,19 +83,19 @@ func (activityUseCase *ActivityUseCase) GetActivityByUserId(userId int) ([]activ
 func (activityUseCase *ActivityUseCase) GetActivityById(activity activityEntities.Activity) (activityEntities.Activity, error) {
 	activity, err := activityUseCase.repository.GetActivityById(activity)
 	if err != nil {
-		return activityEntities.Activity{}, constants.ErrGetDatabase
+		return activityEntities.Activity{}, constants.ErrActivityNotFound
 	}
 	return activity, nil
 }
 
 func (activityUseCase *ActivityUseCase) UpdateActivityById(activity activityEntities.Activity) (activityEntities.Activity, error) {
 	if activity.Title == "" || activity.ActivityStart == "" || activity.ActivityFinish == "" {
-		return activityEntities.Activity{}, constants.ErrEmptyInputCreateActivity
+		return activityEntities.Activity{}, constants.ErrEmptyInputActivity
 	}
 
 	activity, err := activityUseCase.repository.UpdateActivityById(activity)
 	if err != nil {
-		return activityEntities.Activity{}, constants.ErrUpdateDatabase
+		return activityEntities.Activity{}, constants.ErrActivityNotFound
 	}
 	return activity, nil
 }
@@ -99,15 +103,18 @@ func (activityUseCase *ActivityUseCase) UpdateActivityById(activity activityEnti
 func (activityUseCase *ActivityUseCase) DeleteActivityById(activity activityEntities.Activity) error {
 	err := activityUseCase.repository.DeleteActivityById(activity)
 	if err != nil {
-		return constants.ErrDeleteDatabase
+		return constants.ErrActivityNotFound
 	}
 	return nil
 }
 
 func (activityUseCase *ActivityUseCase) CreateActivityType(activityType activityEntities.ActivityType) (activityEntities.ActivityType, error) {
+	if activityType.Name == "" || activityType.Description == "" {
+		return activityEntities.ActivityType{}, constants.ErrEmptyInputActivityType
+	}
 	activityType, err := activityUseCase.repository.CreateActivityType(activityType)
 	if err != nil {
-		return activityEntities.ActivityType{}, constants.ErrGetDatabase
+		return activityEntities.ActivityType{}, constants.ErrInsertDatabase
 	}
 	return activityType, nil
 }
@@ -115,7 +122,7 @@ func (activityUseCase *ActivityUseCase) CreateActivityType(activityType activity
 func (activityUseCase *ActivityUseCase) GetAllActivityType() ([]activityEntities.ActivityType, error) {
 	activityTypes, err := activityUseCase.repository.GetAllActivityType()
 	if err != nil {
-		return []activityEntities.ActivityType{}, constants.ErrGetDatabase
+		return []activityEntities.ActivityType{}, constants.ErrGetAllData
 	}
 	return activityTypes, nil
 }
@@ -123,23 +130,34 @@ func (activityUseCase *ActivityUseCase) GetAllActivityType() ([]activityEntities
 func (activityUseCase *ActivityUseCase) GetActivityTypeById(activityType activityEntities.ActivityType) (activityEntities.ActivityType, error) {
 	activityType, err := activityUseCase.repository.GetActivityTypeById(activityType)
 	if err != nil {
-		return activityEntities.ActivityType{}, constants.ErrGetDatabase
+		return activityEntities.ActivityType{}, constants.ErrActivityTypeNotFound
 	}
 	return activityType, nil
 }
 
 func (activityUseCase *ActivityUseCase) UpdateActivityTypeById(activityType activityEntities.ActivityType) (activityEntities.ActivityType, error) {
-	activityType, err := activityUseCase.repository.UpdateActivityTypeById(activityType)
+	if activityType.Name == "" || activityType.Description == "" {
+		return activityEntities.ActivityType{}, constants.ErrEmptyInputActivityType
+	}
+	activityType, kode, err := activityUseCase.repository.UpdateActivityTypeById(activityType)
 	if err != nil {
-		return activityEntities.ActivityType{}, constants.ErrGetDatabase
+		return activityEntities.ActivityType{}, constants.ErrUpdateData
+	}
+
+	if kode == 1 {
+		return activityEntities.ActivityType{}, constants.ErrActivityTypeNotFound
 	}
 	return activityType, nil
 }
 
 func (activityUseCase *ActivityUseCase) DeleteActivityTypeById(activityType activityEntities.ActivityType) error {
-	err := activityUseCase.repository.DeleteActivityTypeById(activityType)
+	kode, err := activityUseCase.repository.DeleteActivityTypeById(activityType)
 	if err != nil {
-		return constants.ErrDeleteDatabase
+		return constants.ErrDeleteData
+	}
+
+	if kode == 1 {
+		return constants.ErrActivityTypeNotFound
 	}
 	return nil
 }

@@ -61,11 +61,11 @@ func (hireController *HireController) CreateHire(c echo.Context) error {
 		},
 	}
 
-	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Create Hire", hireResponse))
+	return c.JSON(http.StatusCreated, base.NewSuccessResponse("Success Create Hire", hireResponse))
 }
 
 func (hireController *HireController) GetHiresByExpertId(c echo.Context) error {
-	expertId := c.Param("expertId")
+	expertId := c.Param("id")
 	id, _ := strconv.Atoi(expertId)
 
 	hiresEnt, err := hireController.hireUseCase.GetHiresByExpertId(id)
@@ -104,7 +104,7 @@ func (hireController *HireController) GetHiresByExpertId(c echo.Context) error {
 }
 
 func (hireController *HireController) GetHiresByUserId(c echo.Context) error {
-	userId := c.Param("userId")
+	userId := c.Param("id")
 	id, _ := strconv.Atoi(userId)
 
 	hiresEnt, err := hireController.hireUseCase.GetHiresByUserId(id)
@@ -143,7 +143,7 @@ func (hireController *HireController) GetHiresByUserId(c echo.Context) error {
 }
 
 func (hireController *HireController) GetHireById(c echo.Context) error {
-	hireId := c.Param("hireId")
+	hireId := c.Param("id")
 	id, _ := strconv.Atoi(hireId)
 
 	hireEnt, err := hireController.hireUseCase.GetHireById(id)
@@ -179,7 +179,7 @@ func (hireController *HireController) GetHireById(c echo.Context) error {
 }
 
 func (hireController *HireController) VerifyPayment(c echo.Context) error {
-	hireId := c.Param("hireId")
+	hireId := c.Param("id")
 	id, _ := strconv.Atoi(hireId)
 
 	var hireFromRequest request.HireVerifyRequest
@@ -187,7 +187,6 @@ func (hireController *HireController) VerifyPayment(c echo.Context) error {
 
 	hireEnt := hireEntities.Hire{
 		Id:            id,
-		PaymentStatus: hireFromRequest.PaymentStatus,
 		MeetUrl:       hireFromRequest.MeetUrl,
 	}
 

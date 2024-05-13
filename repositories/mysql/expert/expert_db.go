@@ -16,7 +16,7 @@ type Expert struct {
 	Address string
 	Bio string
 	PhoneNumber string
-	Gender string
+	Gender string `gorm:"type:ENUM('pria', 'wanita')"`
 	Age int
 	ProfilePicture string
 	Experience int

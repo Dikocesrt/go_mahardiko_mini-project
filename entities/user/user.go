@@ -18,7 +18,7 @@ type User struct {
 }
 
 type RepositoryInterface interface {
-	Register(user *User) (User, error)
+	Register(user *User) (User, int64, error)
 	Login(user *User) (User, error)
 	UpdateProfileById(user *User) (User, int64, error)
 	GetUserById(user *User) (User, error)

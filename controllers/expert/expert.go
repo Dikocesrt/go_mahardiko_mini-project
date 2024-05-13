@@ -64,7 +64,7 @@ func (expertController *ExpertController) Register(c echo.Context) error {
 			Description: newExpert.Expertise.Description,
 		},
 	}
-	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Register", expertResponse))
+	return c.JSON(http.StatusCreated, base.NewSuccessResponse("Success Register", expertResponse))
 }
 
 func (expertController *ExpertController) Login(c echo.Context) error {
@@ -144,7 +144,7 @@ func (expertController *ExpertController) UpdateProfileExpertById(c echo.Context
 			AccountNumber: newExpert.BankAccount.AccountNumber,
 		},
 	}
-	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Update", expertResponse))
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Update Profile", expertResponse))
 }
 
 func (expertController *ExpertController) GetAllExperts(c echo.Context) error {
@@ -179,7 +179,7 @@ func (expertController *ExpertController) GetAllExperts(c echo.Context) error {
 		}
 	}
 
-	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get All Expert", expertResponse))
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get Experts", expertResponse))
 }
 
 func (expertController *ExpertController) GetExpertById(c echo.Context) error {
@@ -217,9 +217,8 @@ func (expertController *ExpertController) GetExpertById(c echo.Context) error {
 		},
 	}
 
-	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get Expert By Id", expertResponse))
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get Expert", expertResponse))
 }
-
 
 func (expertController *ExpertController) CreateExpertise(c echo.Context) error {
 	var expertiseRequest request.ExpertiseRequest
@@ -240,7 +239,7 @@ func (expertController *ExpertController) CreateExpertise(c echo.Context) error 
 		Description: expertise.Description,
 	}
 
-	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Create Expertise", expertiseResponse))
+	return c.JSON(http.StatusCreated, base.NewSuccessResponse("Success Create Expertise", expertiseResponse))
 }
 
 func (expertController *ExpertController) GetAllExpertise(c echo.Context) error {
@@ -257,11 +256,11 @@ func (expertController *ExpertController) GetAllExpertise(c echo.Context) error 
 		expertiseResponse[i].Description = expertises[i].Description
 	}
 
-	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get All Expertise", expertiseResponse))
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get Expertises", expertiseResponse))
 }
 
 func (expertController *ExpertController) GetExpertiseById(c echo.Context) error {
-	expertiseId := c.Param("expertiseId")
+	expertiseId := c.Param("id")
 	id, _ := strconv.Atoi(expertiseId)
 
 	var expertise expertEntities.Expertise
@@ -285,7 +284,7 @@ func (expertController *ExpertController) UpdateExpertiseById(c echo.Context) er
 	var expertiseRequest request.ExpertiseRequest
 	c.Bind(&expertiseRequest)
 
-	expertiseId := c.Param("expertiseId")
+	expertiseId := c.Param("id")
 	id, _ := strconv.Atoi(expertiseId)
 
 	var expertise expertEntities.Expertise
@@ -308,7 +307,7 @@ func (expertController *ExpertController) UpdateExpertiseById(c echo.Context) er
 }
 
 func (expertController *ExpertController) DeleteExpertiseById(c echo.Context) error {
-	expertiseId := c.Param("expertiseId")
+	expertiseId := c.Param("id")
 	id, _ := strconv.Atoi(expertiseId)
 
 	var expertise expertEntities.Expertise
@@ -340,11 +339,11 @@ func (expertController *ExpertController) CreateBankAccountType(c echo.Context) 
 		Name: bankType.Name,
 	}
 
-	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Create Bank Account Type", bankResponse))
+	return c.JSON(http.StatusCreated, base.NewSuccessResponse("Success Create Bank Account Type", bankResponse))
 }
 
 func (expertController *ExpertController) GetBankAccountTypeById(c echo.Context) error {
-	bankAccountTypeId := c.Param("bankAccountTypeId")
+	bankAccountTypeId := c.Param("id")
 	id, _ := strconv.Atoi(bankAccountTypeId)
 
 	var bankType expertEntities.BankAccountType
@@ -377,14 +376,14 @@ func (expertController *ExpertController) GetAllBankAccountType(c echo.Context) 
 		bankTypesResponse[i].Name = bankTypes[i].Name
 	}
 
-	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get All Bank Account Type", bankTypesResponse))
+	return c.JSON(http.StatusOK, base.NewSuccessResponse("Success Get Bank Account Types", bankTypesResponse))
 }
 
 func (expertController *ExpertController) UpdateBankAccountTypeById(c echo.Context) error {
 	var createBankRequest request.BankTypeRequest
 	c.Bind(&createBankRequest)
 
-	bankAccountTypeId := c.Param("bankAccountTypeId")
+	bankAccountTypeId := c.Param("id")
 	id, _ := strconv.Atoi(bankAccountTypeId)
 
 	var bankType expertEntities.BankAccountType
@@ -405,7 +404,7 @@ func (expertController *ExpertController) UpdateBankAccountTypeById(c echo.Conte
 }
 
 func (expertController *ExpertController) DeleteBankAccountTypeById(c echo.Context) error {
-	bankAccountTypeId := c.Param("bankAccountTypeId")
+	bankAccountTypeId := c.Param("id")
 	id, _ := strconv.Atoi(bankAccountTypeId)
 
 	var bankType expertEntities.BankAccountType

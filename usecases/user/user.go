@@ -26,7 +26,7 @@ func NewUserUseCase(repository userEntitites.RepositoryInterface) *UserUseCase {
 
 func (userUseCase *UserUseCase) Register(user *userEntitites.User) (userEntitites.User, error) {
 	if user.FullName == "" || user.Username == "" || user.Email == "" || user.Password == "" {
-		return userEntitites.User{}, constants.ErrEmptyInputRegistration
+		return userEntitites.User{}, constants.ErrEmptyInputUser
 	}
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
@@ -36,9 +36,18 @@ func (userUseCase *UserUseCase) Register(user *userEntitites.User) (userEntitite
 
 	user.Password = string(hashedPassword)
 	
-	newUser, err := userUseCase.repository.Register(user)
+	var kode int64
+	newUser, kode, err := userUseCase.repository.Register(user)
 	if err != nil {
 		return userEntitites.User{}, constants.ErrInsertDatabase
+	}
+
+	if kode == 1 {
+		return userEntitites.User{}, constants.ErrUsernameAlreadyExist
+	}
+
+	if kode == 2 {
+		return userEntitites.User{}, constants.ErrEmailAlreadyExist
 	}
 
 	return newUser, nil
@@ -87,7 +96,7 @@ func uploadImage(file *multipart.FileHeader) (string, error) {
 
 func (userUseCase *UserUseCase) UpdateProfileById(user *userEntitites.User, file *multipart.FileHeader) (userEntitites.User, error) {
 	if user.FullName == "" || user.Username == "" || user.Email == "" || user.Password == "" {
-		return userEntitites.User{}, constants.ErrEmptyInputUpdateProfile
+		return userEntitites.User{}, constants.ErrEmptyInputUser
 	}
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
@@ -108,7 +117,7 @@ func (userUseCase *UserUseCase) UpdateProfileById(user *userEntitites.User, file
 
 	userFromDb, kode, err  := userUseCase.repository.UpdateProfileById(user)
 	if err != nil{
-		return userEntitites.User{}, constants.ErrUpdateDatabase
+		return userEntitites.User{}, constants.ErrUserNotFound
 	}
 
 	if kode == 2 {
