@@ -69,8 +69,12 @@ func (activityUseCase *ActivityUseCase) CreateActivity(activity activityEntities
 }
 
 func (activityUseCase *ActivityUseCase) GetActivityByUserId(userId int) ([]activityEntities.Activity, error) {
-	activities, err := activityUseCase.repository.GetActivityByUserId(userId)
+	activities, kode, err := activityUseCase.repository.GetActivityByUserId(userId)
 	if err != nil {
+		return []activityEntities.Activity{}, constants.ErrGetAllData
+	}
+
+	if kode == 1 {
 		return []activityEntities.Activity{}, constants.ErrGetActivitiesByUserId
 	}
 	return activities, nil

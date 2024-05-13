@@ -100,7 +100,7 @@ func (hireUseCase *HireUseCase) GetHireById(id int) (hireEntities.Hire, error) {
 }
 
 func (hireUseCase *HireUseCase) VerifyPayment(hire *hireEntities.Hire) (hireEntities.Hire, error) {
-	if hire.PaymentStatus == "" || hire.MeetUrl == "" {
+	if hire.MeetUrl == "" {
 		return hireEntities.Hire{}, constants.ErrEmptyInputVerifyPayment
 	}
 	hire.HireStart = time.Now()

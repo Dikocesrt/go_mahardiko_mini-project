@@ -30,7 +30,7 @@ type ActivityDetail struct {
 
 type RepositoryInterface interface {
 	CreateActivity(activity Activity) (Activity, error)
-	GetActivityByUserId(userId int) ([]Activity, error)
+	GetActivityByUserId(userId int) ([]Activity, int64, error)
 	GetActivityById(activity Activity) (Activity, error)
 	UpdateActivityById(activity Activity) (Activity, error)
 	DeleteActivityById(activity Activity) error

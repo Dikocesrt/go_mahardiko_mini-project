@@ -187,7 +187,6 @@ func (hireController *HireController) VerifyPayment(c echo.Context) error {
 
 	hireEnt := hireEntities.Hire{
 		Id:            id,
-		PaymentStatus: hireFromRequest.PaymentStatus,
 		MeetUrl:       hireFromRequest.MeetUrl,
 	}
 

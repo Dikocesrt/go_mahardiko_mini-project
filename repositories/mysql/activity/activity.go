@@ -3,6 +3,7 @@ package activity
 import (
 	"fmt"
 	activityEntities "habit/entities/activity"
+	"habit/repositories/mysql/user"
 
 	"gorm.io/gorm"
 )
@@ -55,12 +56,28 @@ func (activityRepo *ActivityRepo) CreateActivity(activity activityEntities.Activ
 	return *newActivityEnt, nil
 }
 
-func (activityRepo *ActivityRepo) GetActivityByUserId(userId int) ([]activityEntities.Activity, error) {
+func (activityRepo *ActivityRepo) GetActivityByUserId(userId int) ([]activityEntities.Activity, int64, error) {
 	var activities []Activity
-	err := activityRepo.DB.Where("user_id = ?", userId).Find(&activities).Error
+
+	var user user.User
+	var counter int64
+	err := activityRepo.DB.Model(&user).Where("id = ?", userId).Count(&counter).Error
+	if err != nil {
+		return []activityEntities.Activity{}, 0, err
+	}
+
+	if counter == 0 {
+		return []activityEntities.Activity{}, 1, nil
+	}
+
+	if counter == 0 {
+		return []activityEntities.Activity{}, 0, nil
+	}
+
+	err = activityRepo.DB.Where("user_id = ?", userId).Find(&activities).Error
 	if err != nil {
 		fmt.Println(err)
-		return []activityEntities.Activity{}, err
+		return []activityEntities.Activity{}, 0, err
 	}
 
 	activityDetails := make([]ActivityDetail, len(activities))
@@ -69,7 +86,7 @@ func (activityRepo *ActivityRepo) GetActivityByUserId(userId int) ([]activityEnt
 		err = activityRepo.DB.Where("id = ?", activities[i].ActivityDetailId).First(&activityDetails[i]).Error
 		if err != nil {
 			fmt.Println(err)
-			return []activityEntities.Activity{}, err
+			return []activityEntities.Activity{}, 0, err
 		}
 	}
 
@@ -79,7 +96,7 @@ func (activityRepo *ActivityRepo) GetActivityByUserId(userId int) ([]activityEnt
 		err = activityRepo.DB.Where("id = ?", activities[i].ActivityTypeId).First(&activityTypes[i]).Error
 		if err != nil {
 			fmt.Println(err)
-			return []activityEntities.Activity{}, err
+			return []activityEntities.Activity{}, 0, err
 		}
 	}
 
@@ -91,7 +108,7 @@ func (activityRepo *ActivityRepo) GetActivityByUserId(userId int) ([]activityEnt
 		activitiesEntities[i].ActivityType = *activityTypes[i].FromActivityDbToActivityTypeEntities()
 	}
 
-	return activitiesEntities, nil
+	return activitiesEntities, 0, nil
 }
 
 func (activityRepo *ActivityRepo) GetActivityById(activity activityEntities.Activity) (activityEntities.Activity, error) {
