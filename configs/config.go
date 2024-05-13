@@ -22,6 +22,7 @@ func InitConfigMySQL() mysql.Config {
 		DBPass: os.Getenv("DBPass"),
 		DBHost: os.Getenv("DBHost"),
 		DBPort: os.Getenv("DBPort"),
+		DBUnix: os.Getenv("DBUnix"),
 	}
 }
 
