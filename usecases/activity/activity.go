@@ -135,16 +135,24 @@ func (activityUseCase *ActivityUseCase) UpdateActivityTypeById(activityType acti
 	if activityType.Name == "" || activityType.Description == "" {
 		return activityEntities.ActivityType{}, constants.ErrEmptyInputActivityType
 	}
-	activityType, err := activityUseCase.repository.UpdateActivityTypeById(activityType)
+	activityType, kode, err := activityUseCase.repository.UpdateActivityTypeById(activityType)
 	if err != nil {
+		return activityEntities.ActivityType{}, constants.ErrUpdateData
+	}
+
+	if kode == 1 {
 		return activityEntities.ActivityType{}, constants.ErrActivityTypeNotFound
 	}
 	return activityType, nil
 }
 
 func (activityUseCase *ActivityUseCase) DeleteActivityTypeById(activityType activityEntities.ActivityType) error {
-	err := activityUseCase.repository.DeleteActivityTypeById(activityType)
+	kode, err := activityUseCase.repository.DeleteActivityTypeById(activityType)
 	if err != nil {
+		return constants.ErrDeleteData
+	}
+
+	if kode == 1 {
 		return constants.ErrActivityTypeNotFound
 	}
 	return nil

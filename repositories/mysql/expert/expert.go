@@ -243,26 +243,47 @@ func (expertRepo *ExpertRepo) GetExpertiseById(expertise expertEntities.Expertis
 	return expertise, nil
 }
 
-func (expertRepo *ExpertRepo) UpdateExpertiseById(expertise expertEntities.Expertise) (expertEntities.Expertise, error) {
+func (expertRepo *ExpertRepo) UpdateExpertiseById(expertise expertEntities.Expertise) (expertEntities.Expertise, int64, error) {
 	var expertiseDb Expertise
 	expertiseDb.Id = expertise.Id
 	expertiseDb.Name = expertise.Name
 	expertiseDb.Description = expertise.Description
-	err := expertRepo.DB.Save(&expertiseDb).Error
+
+	var counter int64
+	err := expertRepo.DB.Model(&expertiseDb).Where("id = ?", expertiseDb.Id).Count(&counter).Error
 	if err != nil {
-		return expertEntities.Expertise{}, err
+		return expertEntities.Expertise{}, 0, err
 	}
-	return expertise, nil
+
+	if counter == 0 {
+		return expertEntities.Expertise{}, 1, nil
+	}
+
+	err = expertRepo.DB.Save(&expertiseDb).Error
+	if err != nil {
+		return expertEntities.Expertise{}, 0, err
+	}
+	return expertise, 0, nil
 }
 
-func (expertRepo *ExpertRepo) DeleteExpertiseById(expertise expertEntities.Expertise) error {
+func (expertRepo *ExpertRepo) DeleteExpertiseById(expertise expertEntities.Expertise) (int64, error) {
 	var expertiseDb Expertise
 	expertiseDb.Id = expertise.Id
-	err := expertRepo.DB.Delete(&expertiseDb).Error
+	var counter int64
+	err := expertRepo.DB.Model(&expertiseDb).Where("id = ?", expertiseDb.Id).Count(&counter).Error
 	if err != nil {
-		return err
+		return 0, err
 	}
-	return nil
+
+	if counter == 0 {
+		return 1, nil
+	}
+
+	err = expertRepo.DB.Delete(&expertiseDb).Error
+	if err != nil {
+		return 0, err
+	}
+	return 0, nil
 }
 
 func (expertRepo *ExpertRepo) CreateBankAccountType(bankType expertEntities.BankAccountType) (expertEntities.BankAccountType, error) {
@@ -326,12 +347,24 @@ func (expertRepo *ExpertRepo) UpdateBankAccountTypeById(bankType expertEntities.
 	return bankType, 0, nil
 }
 
-func (expertRepo *ExpertRepo) DeleteBankAccountTypeById(bankType expertEntities.BankAccountType) error {
+func (expertRepo *ExpertRepo) DeleteBankAccountTypeById(bankType expertEntities.BankAccountType) (int64, error) {
 	var bankTypeDb BankAccountType
 	bankTypeDb.Id = bankType.Id
-	err := expertRepo.DB.Delete(&bankTypeDb).Error
+
+	var counter int64
+	err := expertRepo.DB.Model(&bankTypeDb).Where("Id = ?", bankType.Id).Count(&counter).Error
 	if err != nil {
-		return err
+		return 0, err
 	}
-	return nil
+
+	if counter == 0 {
+		return 1, nil
+	}
+
+
+	err = expertRepo.DB.Delete(&bankTypeDb).Error
+	if err != nil {
+		return 0, err
+	}
+	return 0, nil
 }

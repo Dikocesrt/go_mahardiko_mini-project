@@ -37,8 +37,8 @@ type RepositoryInterface interface {
 	CreateActivityType(activityType ActivityType) (ActivityType, error)
 	GetAllActivityType() ([]ActivityType, error)
 	GetActivityTypeById(activityType ActivityType) (ActivityType, error)
-	UpdateActivityTypeById(activityType ActivityType) (ActivityType, error)
-	DeleteActivityTypeById(activityType ActivityType) error
+	UpdateActivityTypeById(activityType ActivityType) (ActivityType, int64, error)
+	DeleteActivityTypeById(activityType ActivityType) (int64, error)
 }
 
 type UseCaseInterface interface {

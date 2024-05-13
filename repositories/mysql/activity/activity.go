@@ -272,28 +272,48 @@ func (activityRepo *ActivityRepo) GetActivityTypeById(activityType activityEntit
 	return activityTypeEnt, nil
 }
 
-func (activityRepo *ActivityRepo) UpdateActivityTypeById(activityType activityEntities.ActivityType) (activityEntities.ActivityType, error) {
+func (activityRepo *ActivityRepo) UpdateActivityTypeById(activityType activityEntities.ActivityType) (activityEntities.ActivityType, int64, error) {
 	var activityTypeDb ActivityType
 	activityTypeDb.Id = activityType.Id
 	activityTypeDb.Name = activityType.Name
 	activityTypeDb.Description = activityType.Description
 
-	err := activityRepo.DB.Save(&activityTypeDb).Error
+	var counter int64
+	err := activityRepo.DB.Model(&activityTypeDb).Where("id = ?", activityTypeDb.Id).Count(&counter).Error
 	if err != nil {
-		return activityEntities.ActivityType{}, err
+		return activityEntities.ActivityType{}, 0, err
 	}
 
-	return activityType, nil
+	if counter == 0 {
+		return activityEntities.ActivityType{}, 1, err
+	}
+
+	err = activityRepo.DB.Save(&activityTypeDb).Error
+	if err != nil {
+		return activityEntities.ActivityType{}, 0, err
+	}
+
+	return activityType, 0, nil
 }
 
-func (activityRepo *ActivityRepo) DeleteActivityTypeById(activityType activityEntities.ActivityType) error {
+func (activityRepo *ActivityRepo) DeleteActivityTypeById(activityType activityEntities.ActivityType) (int64, error) {
 	var activityTypeDb ActivityType
 	activityTypeDb.Id = activityType.Id
 
-	err := activityRepo.DB.Delete(&activityTypeDb).Error
+	var counter int64
+	err := activityRepo.DB.Model(&activityTypeDb).Where("id = ?", activityTypeDb.Id).Count(&counter).Error
 	if err != nil {
-		return err
+		return 0, err
 	}
 
-	return nil
+	if counter == 0 {
+		return 1, err
+	}
+
+	err = activityRepo.DB.Delete(&activityTypeDb).Error
+	if err != nil {
+		return 0, err
+	}
+
+	return 0, nil
 }

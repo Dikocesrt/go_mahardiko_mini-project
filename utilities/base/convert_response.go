@@ -91,6 +91,9 @@ func ConvertResponseCode(err error) int {
 		case constants.ErrUpdateData:
 			return http.StatusInternalServerError
 
+		case constants.ErrDeleteData:
+			return http.StatusInternalServerError
+
 		default:
 			return http.StatusInternalServerError
 	}

@@ -12,7 +12,7 @@ func CreateToken(userId int) (string, error) {
 	claims := jwt.MapClaims{}
 	claims["userId"] = userId
 	claims["role"] = "user"
-	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
+	claims["exp"] = time.Now().Add(time.Hour * 24 * 7).Unix()
 
 	//membuat header
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -26,7 +26,7 @@ func CreateTokenExpert(userId int) (string, error) {
 	claims := jwt.MapClaims{}
 	claims["userId"] = userId
 	claims["role"] = "expert"
-	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
+	claims["exp"] = time.Now().Add(time.Hour * 24 * 7).Unix()
 
 	//membuat header
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -40,7 +40,7 @@ func CreateTokenAdmin(userId int) (string, error) {
 	claims := jwt.MapClaims{}
 	claims["userId"] = userId
 	claims["role"] = "admin"
-	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
+	claims["exp"] = time.Now().Add(time.Hour * 24 * 7).Unix()
 
 	//membuat header
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

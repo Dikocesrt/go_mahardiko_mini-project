@@ -170,16 +170,25 @@ func (expertUseCase *ExpertUseCase) UpdateExpertiseById(expertise expertEntities
 	if expertise.Name == "" || expertise.Description == "" {
 		return expertEntities.Expertise{}, constants.ErrEmptyInputActivityType
 	}
-	newExpertise, err := expertUseCase.repository.UpdateExpertiseById(expertise)
+	newExpertise, kode, err := expertUseCase.repository.UpdateExpertiseById(expertise)
 	if err != nil {
+		return expertEntities.Expertise{}, constants.ErrUpdateData
+	}
+
+	if kode == 1 {
 		return expertEntities.Expertise{}, constants.ErrExpertiseNotFound
 	}
+
 	return newExpertise, nil
 }
 
 func (expertUseCase *ExpertUseCase) DeleteExpertiseById(expertise expertEntities.Expertise) error {
-	err := expertUseCase.repository.DeleteExpertiseById(expertise)
+	kode, err := expertUseCase.repository.DeleteExpertiseById(expertise)
 	if err != nil {
+		return constants.ErrExpertiseNotFound
+	}
+
+	if kode == 1 {
 		return constants.ErrExpertiseNotFound
 	}
 	return nil
@@ -228,9 +237,14 @@ func (expertUseCase *ExpertUseCase) UpdateBankAccountTypeById(bankType expertEnt
 }
 
 func (expertUseCase *ExpertUseCase) DeleteBankAccountTypeById(bankType expertEntities.BankAccountType) error {
-	err := expertUseCase.repository.DeleteBankAccountTypeById(bankType)
+	kode, err := expertUseCase.repository.DeleteBankAccountTypeById(bankType)
 	if err != nil {
+		return constants.ErrDeleteData
+	}
+
+	if kode == 1 {
 		return constants.ErrBankAccountTypeNotFound
 	}
+
 	return nil
 }
