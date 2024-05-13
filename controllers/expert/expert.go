@@ -260,7 +260,7 @@ func (expertController *ExpertController) GetAllExpertise(c echo.Context) error 
 }
 
 func (expertController *ExpertController) GetExpertiseById(c echo.Context) error {
-	expertiseId := c.Param("expertiseId")
+	expertiseId := c.Param("id")
 	id, _ := strconv.Atoi(expertiseId)
 
 	var expertise expertEntities.Expertise
@@ -284,7 +284,7 @@ func (expertController *ExpertController) UpdateExpertiseById(c echo.Context) er
 	var expertiseRequest request.ExpertiseRequest
 	c.Bind(&expertiseRequest)
 
-	expertiseId := c.Param("expertiseId")
+	expertiseId := c.Param("id")
 	id, _ := strconv.Atoi(expertiseId)
 
 	var expertise expertEntities.Expertise
@@ -307,7 +307,7 @@ func (expertController *ExpertController) UpdateExpertiseById(c echo.Context) er
 }
 
 func (expertController *ExpertController) DeleteExpertiseById(c echo.Context) error {
-	expertiseId := c.Param("expertiseId")
+	expertiseId := c.Param("id")
 	id, _ := strconv.Atoi(expertiseId)
 
 	var expertise expertEntities.Expertise
@@ -343,7 +343,7 @@ func (expertController *ExpertController) CreateBankAccountType(c echo.Context) 
 }
 
 func (expertController *ExpertController) GetBankAccountTypeById(c echo.Context) error {
-	bankAccountTypeId := c.Param("bankAccountTypeId")
+	bankAccountTypeId := c.Param("id")
 	id, _ := strconv.Atoi(bankAccountTypeId)
 
 	var bankType expertEntities.BankAccountType
@@ -383,7 +383,7 @@ func (expertController *ExpertController) UpdateBankAccountTypeById(c echo.Conte
 	var createBankRequest request.BankTypeRequest
 	c.Bind(&createBankRequest)
 
-	bankAccountTypeId := c.Param("bankAccountTypeId")
+	bankAccountTypeId := c.Param("id")
 	id, _ := strconv.Atoi(bankAccountTypeId)
 
 	var bankType expertEntities.BankAccountType
@@ -404,7 +404,7 @@ func (expertController *ExpertController) UpdateBankAccountTypeById(c echo.Conte
 }
 
 func (expertController *ExpertController) DeleteBankAccountTypeById(c echo.Context) error {
-	bankAccountTypeId := c.Param("bankAccountTypeId")
+	bankAccountTypeId := c.Param("id")
 	id, _ := strconv.Atoi(bankAccountTypeId)
 
 	var bankType expertEntities.BankAccountType

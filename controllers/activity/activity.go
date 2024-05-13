@@ -70,7 +70,7 @@ func (activityController *ActivityController) CreateActivity(c echo.Context) err
 }
 
 func (activityController *ActivityController) GetActivityByUserId(c echo.Context) error {
-	userId := c.Param("userId")
+	userId := c.Param("id")
 	id, _ := strconv.Atoi(userId)
 
 	activityEnt, err := activityController.activityUseCase.GetActivityByUserId(id)
@@ -246,7 +246,7 @@ func (activityController *ActivityController) GetAllActivityType(c echo.Context)
 }
 
 func (activityController *ActivityController) GetActivityTypeById(c echo.Context) error {
-	activityId := c.Param("activityTypeId")
+	activityId := c.Param("id")
 	id, _ := strconv.Atoi(activityId)
 
 	var activityTypeEnt activityEntities.ActivityType
@@ -267,7 +267,7 @@ func (activityController *ActivityController) GetActivityTypeById(c echo.Context
 }
 
 func (activityController *ActivityController) UpdateActivityTypeById(c echo.Context) error {
-	activityId := c.Param("activityTypeId")
+	activityId := c.Param("id")
 	id, _ := strconv.Atoi(activityId)
 
 	var activityTypeEnt activityEntities.ActivityType
@@ -289,7 +289,7 @@ func (activityController *ActivityController) UpdateActivityTypeById(c echo.Cont
 }
 
 func (activityController *ActivityController) DeleteActivityTypeById(c echo.Context) error {
-	activityId := c.Param("activityTypeId")
+	activityId := c.Param("id")
 	id, _ := strconv.Atoi(activityId)
 
 	var activityTypeEnt activityEntities.ActivityType
