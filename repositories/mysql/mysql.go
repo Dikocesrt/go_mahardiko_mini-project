@@ -32,7 +32,6 @@ func ConnectDB(config Config) *gorm.DB {
 
 	dsn := fmt.Sprintf("%s:%s@unix(%s)/%s?parseTime=true", config.DBUser, config.DBPass, config.DBUnix, config.DBName)
 
-	
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err)
