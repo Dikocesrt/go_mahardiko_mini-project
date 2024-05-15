@@ -7,6 +7,7 @@ import (
 	expertDb "habit/repositories/mysql/expert"
 	hireDb "habit/repositories/mysql/hire"
 	userDb "habit/repositories/mysql/user"
+	"strconv"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -22,11 +23,13 @@ type Config struct {
 }
 
 func ConnectDB(config Config) *gorm.DB {
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+	dbportint, _ := strconv.Atoi(config.DBPort)
+
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		config.DBUser,
 		config.DBPass,
 		config.DBHost,
-		config.DBPort,
+		dbportint,
 		config.DBName,
 	)
 
