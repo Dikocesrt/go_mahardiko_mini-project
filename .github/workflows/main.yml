@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: create env
         run: |
-          echo " ${{ secrets.ENV_PROJECT }} " > .env
+          echo "${{ secrets.ENV_PROJECT }}" > .env
       - name: build image
         run: docker build -t dikocesrt/habit-master:latest .
       - name: login registry
