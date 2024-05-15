@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	"habit/constants"
+	"habit/configs"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -18,7 +18,7 @@ func CreateToken(userId int) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	//verify signature
-	return token.SignedString([]byte(constants.SECRET_JWT))
+	return token.SignedString([]byte(configs.InitConfigJWT()))
 }
 
 func CreateTokenExpert(userId int) (string, error) {
@@ -32,7 +32,7 @@ func CreateTokenExpert(userId int) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	//verify signature
-	return token.SignedString([]byte(constants.SECRET_JWT))
+	return token.SignedString([]byte(configs.InitConfigJWT()))
 }
 
 func CreateTokenAdmin(userId int) (string, error) {
@@ -46,5 +46,5 @@ func CreateTokenAdmin(userId int) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	//verify signature
-	return token.SignedString([]byte(constants.SECRET_JWT))
+	return token.SignedString([]byte(configs.InitConfigJWT()))
 }
