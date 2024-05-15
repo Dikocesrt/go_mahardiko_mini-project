@@ -38,3 +38,14 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: push image
         run: docker push dikocesrt/habit-master:latest
+
+  deploy:
+    needs: buildimage
+    runs-on: self-hosted
+    steps:
+      - name: pull docker image
+        run: docker pull dikocesrt/habit-master:latest
+      - name: delete old conainer if exist
+        run: docker rm -f habit-master
+      - name: run docker container
+        run: docker run -d -p 8080:8080 --name habit-master dikocesrt/habit-master
