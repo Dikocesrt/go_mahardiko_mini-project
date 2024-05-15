@@ -31,5 +31,9 @@ func InitConfigCloudinary() string {
 }
 
 func InitConfigKeyChatbot() string {
-	return os.Getenv("KEY")
+	return os.Getenv("KEY_AI")
+}
+
+func InitConfigJWT() string {
+	return os.Getenv("SECRET_JWT")
 }

@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"habit/constants"
+	"habit/configs"
 	"habit/controllers/activity"
 	"habit/controllers/admin"
 	"habit/controllers/chatbot"
@@ -51,7 +51,7 @@ func (r *RouteController) InitRoute(e *echo.Echo) {
 	e.POST("/admin/login", r.adminController.Login) //Login Admin
 
 	userGroup := e.Group("/users")
-	userGroup.Use(middleware.JWT([]byte(constants.SECRET_JWT)))
+	userGroup.Use(middleware.JWT([]byte(configs.InitConfigJWT())))
 	userGroup.Use(myMiddleware.UserOnlyMiddleware)
 
 	userGroup.GET("/:id", r.userController.GetUserById) //Get User By Id
@@ -77,7 +77,7 @@ func (r *RouteController) InitRoute(e *echo.Echo) {
 
 
 	expertGroup := e.Group("/experts")
-	expertGroup.Use(middleware.JWT([]byte(constants.SECRET_JWT)))
+	expertGroup.Use(middleware.JWT([]byte(configs.InitConfigJWT())))
 	expertGroup.Use(myMiddleware.ExpertOnlyMiddleware)
 
 	expertGroup.GET("/:id", r.expertController.GetExpertById) //Get Expert By Id
@@ -96,7 +96,7 @@ func (r *RouteController) InitRoute(e *echo.Echo) {
 
 
 	adminGroup := e.Group("/admin")
-	adminGroup.Use(middleware.JWT([]byte(constants.SECRET_JWT)))
+	adminGroup.Use(middleware.JWT([]byte(configs.InitConfigJWT())))
 	adminGroup.Use(myMiddleware.AdminOnlyMiddleware)
 
 	adminGroup.POST("/bank-account-types", r.expertController.CreateBankAccountType) //Create Bank Account Type
