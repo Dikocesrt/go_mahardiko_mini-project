@@ -9,6 +9,13 @@ import (
 	"github.com/sashabaranov/go-openai"
 )
 
+type ChatbotUseCase struct {
+}
+
+func NewChatbotUseCase() *ChatbotUseCase {
+	return &ChatbotUseCase{}
+}
+
 func getCompletionFromMessages(
 	ctx context.Context,
 	client *openai.Client,
@@ -29,7 +36,7 @@ func getCompletionFromMessages(
 	return resp, err
 }
 
-func Chat(chat *chatbotEntities.Chatbot) (*chatbotEntities.Chatbot, error) {
+func (chatbotUseCase *ChatbotUseCase) Chat(chat *chatbotEntities.Chatbot) (*chatbotEntities.Chatbot, error) {
 	if chat.Content == "" {
 		return nil, constants.ErrChatEmptyInput
 	}
