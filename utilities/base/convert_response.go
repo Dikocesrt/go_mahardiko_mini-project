@@ -94,6 +94,12 @@ func ConvertResponseCode(err error) int {
 		case constants.ErrDeleteData:
 			return http.StatusInternalServerError
 
+		case constants.ErrChatbotServer:
+			return http.StatusInternalServerError
+
+		case constants.ErrChatEmptyInput:
+			return http.StatusBadRequest
+
 		default:
 			return http.StatusInternalServerError
 	}
