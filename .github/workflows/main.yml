@@ -37,4 +37,4 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: push image
-        run: docker push dikocesrt/habit-master
+        run: docker push dikocesrt/habit-master:latest

@@ -6,8 +6,8 @@ COPY . .
 
 RUN go mod download
 
-RUN go build -o bin
+RUN go build -o bin/main
 
 EXPOSE 8080
 
-ENTRYPOINT [ "/app/bin" ]
+ENTRYPOINT [ "/app/bin/main" ]
