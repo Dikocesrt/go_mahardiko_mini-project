@@ -4,6 +4,7 @@ import (
 	"habit/constants"
 	"habit/controllers/activity"
 	"habit/controllers/admin"
+	"habit/controllers/chatbot"
 	"habit/controllers/expert"
 	"habit/controllers/hire"
 	"habit/controllers/user"
@@ -20,15 +21,17 @@ type RouteController struct {
 	expertController *expert.ExpertController
 	hireController *hire.HireController
 	adminController *admin.AdminController
+	chatbotController *chatbot.ChatbotController
 }
 
-func NewRoute(userController *user.UserController, activityController *activity.ActivityController, expertController *expert.ExpertController, hireController *hire.HireController, adminController *admin.AdminController) *RouteController {
+func NewRoute(userController *user.UserController, activityController *activity.ActivityController, expertController *expert.ExpertController, hireController *hire.HireController, adminController *admin.AdminController, chatbotController *chatbot.ChatbotController) *RouteController {
 	return &RouteController{
 		userController: userController,
 		activityController: activityController,
 		expertController: expertController,
 		hireController: hireController,
 		adminController: adminController,
+		chatbotController: chatbotController,
 	}
 }
 
@@ -66,6 +69,9 @@ func (r *RouteController) InitRoute(e *echo.Echo) {
 	userGroup.POST("/hires", r.hireController.CreateHire) //Create Hire
 	userGroup.GET("/hires/user/:id", r.hireController.GetHiresByUserId) //Get Hires By User Id
 	userGroup.GET("/hires/:id", r.hireController.GetHireById) //Get Hire By Id
+
+	userGroup.POST("/chatbot", r.chatbotController.Chat)
+
 
 
 

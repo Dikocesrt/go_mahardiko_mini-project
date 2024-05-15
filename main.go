@@ -4,6 +4,7 @@ import (
 	"habit/configs"
 	activityController "habit/controllers/activity"
 	adminController "habit/controllers/admin"
+	chatbotController "habit/controllers/chatbot"
 	expertController "habit/controllers/expert"
 	hireController "habit/controllers/hire"
 	userController "habit/controllers/user"
@@ -16,6 +17,7 @@ import (
 	"habit/routes"
 	activityUseCase "habit/usecases/activity"
 	adminUseCase "habit/usecases/admin"
+	chatbotUseCase "habit/usecases/chatbot"
 	expertUseCase "habit/usecases/expert"
 	hireUseCase "habit/usecases/hire"
 	userUseCase "habit/usecases/user"
@@ -47,7 +49,10 @@ func main() {
 	adminUC := adminUseCase.NewAdminUseCase(adminRepo)
 	adminCont := adminController.NewAdminController(adminUC)
 
-	route := routes.NewRoute(userCont, activityCont, expertCont, hireCont, adminCont)
+	chatbotUC := chatbotUseCase.NewChatbotUseCase()
+	chatbotCont := chatbotController.NewChatbotController(chatbotUC)
+
+	route := routes.NewRoute(userCont, activityCont, expertCont, hireCont, adminCont, chatbotCont)
 
 	e := echo.New()
 	route.InitRoute(e)

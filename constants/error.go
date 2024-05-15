@@ -59,3 +59,7 @@ var ErrEmptyInputAdmin error = errors.New("username, email or password cannot be
 var ErrAdminNotFound error = errors.New("admin not found")
 
 var ErrCloudinary error = errors.New("cloudinary url not found")
+
+var ErrChatbotServer error = errors.New("chatbot server error")
+
+var ErrChatEmptyInput error = errors.New("content cannot be empty")

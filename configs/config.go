@@ -29,3 +29,7 @@ func InitConfigMySQL() mysql.Config {
 func InitConfigCloudinary() string {
 	return os.Getenv("CLOUDINARY_URL")
 }
+
+func InitConfigKeyChatbot() string {
+	return os.Getenv("KEY")
+}
