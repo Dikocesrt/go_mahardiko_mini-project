@@ -1,4 +1,5 @@
 # Habit Master
+![Banner](https://res.cloudinary.com/dy2fwknbn/image/upload/v1715825763/whzozn5uxwuvin8gruaa.jpg)
 
 ## Deskripsi Project
 ### Tujuan Aplikasi
@@ -30,7 +31,6 @@ Dengan kombinasi fitur-fitur ini, "Habit Master" bertujuan untuk menjadi mitra s
 - Update Profile
 - Melihat Aktivitas Customer
 - Verifikasi pembayaran
-
 
 ### Admin
 - Registrasi
